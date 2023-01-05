@@ -16,7 +16,17 @@ class CollectionController extends Controller
     public function index(Request $request)
     {
         if(isset($request->type)){
+            
+            switch ($request->type) {
+                case 'post':
+                    $request = CollectionController::newCollection($request);
+                break;
+                default:
+                    return response()->json(['success' => false]);
+                break;
+            }
             return response()->json(['success' => true]);
+
         }else{
             
             return response()->json(['success' => false]);
@@ -34,6 +44,27 @@ class CollectionController extends Controller
     }
 
     /**
+     * New Collection is here, first create a new user
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function newCollection(Request $request)
+    {
+        // $response = new Collection();
+        // $response->user_id = $request->
+        $createNewUser = $request->name;
+
+
+
+
+
+        
+
+
+    }
+
+    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -41,7 +72,14 @@ class CollectionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $response = new Collection();
+
+
+
+
+        
+
+
     }
 
     /**
