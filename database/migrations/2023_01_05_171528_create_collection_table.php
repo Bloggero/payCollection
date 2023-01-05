@@ -15,13 +15,13 @@ return new class extends Migration
     {
         Schema::create('collection', function (Blueprint $table) {
             $table->id();
-            $table->id_user;
-            $table->string('description');
+            $table->foreignId('user_id');
+            $table->text('description')->nullable();
             $table->integer('amount');
             $table->string('credit_type');
             $table->string('time_type');
             $table->date('date_info');
-            $table->integer('extends');
+            $table->boolean('extends');
             $table->timestamps();
         });
     }
