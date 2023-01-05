@@ -8,6 +8,6 @@ Route::get('/', function () {
     return redirect('/admin/dashboard');
 });
 
-Route::get('/dashboard', function () {return view('admin.dashboard');});
+Route::get('/dashboard', [CollectionController::class, 'index']);
 
 Route::post('/dashboard/request', [CollectionController::class, 'index']);

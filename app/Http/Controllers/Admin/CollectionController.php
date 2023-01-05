@@ -19,7 +19,6 @@ class CollectionController extends Controller
     public function index(Request $request)
     {
         if(isset($request->type)){
-            
             switch ($request->type) {
                 case 'post':
                     $requestToArray = $request;
@@ -29,11 +28,14 @@ class CollectionController extends Controller
                     return response()->json(['success' => false]);
                 break;
             }
-            return response()->json(['success2' => $request]);
+            return response()->json(['success' => $request]);
 
         }else{
             
-            return response()->json(['success' => false]);
+            $getData = Collection::all();
+            return view('admin.dashboard', 
+                        ['data' => $getData]
+                    );
         }
     }
 

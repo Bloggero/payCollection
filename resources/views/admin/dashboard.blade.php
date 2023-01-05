@@ -13,81 +13,30 @@
             <div class="col-12">
                 <button class="btn btn-primary float-right" data-toggle="modal" data-target="#newUserModal">New User</button>
             </div>
-            <div class="col-3">
-                <div class="card">
-                    <div class="card-header">
-                        <b>Jose Luis</b>
-                        <label class="float-right"><i class="fa fa-eye" aria-hidden="true"></i></label>
-                    </div>
-                    <div class="card-body">
-                        <p class="card-text text-muted">Some quick example text to build on the card title and make up the
-                            bulk of the
-                            card's content.</p>
-                        <hr />
-                        <p class="card-text text-danger"><b>$1600</b></p>
-
-                    </div>
-
-                    <a href="#" class="card-link bg-success">
-                        <div class="card-footer text-center">
-                            Pay
+            {{dd($data)}}
+            @foreach ($data as $element)
+                <div class="col-3">
+                    <div class="card">
+                        <div class="card-header">
+                            <b>{{$element->user_id}}</b>
+                            <label class="float-right"><i class="fa fa-eye" aria-hidden="true"></i></label>
                         </div>
-                    </a>
-                </div>
-
-            </div>
-            <div class="col-3">
-                <div class="card">
-                    <div class="card-header">
-                        <b>Jose Luis</b>
-                        <label class="float-right"><i class="fa fa-eye" aria-hidden="true"></i></label>
-                    </div>
-                    <div class="card-body">
-                        <p class="card-text text-muted">Some quick example text to build on the card title and make up the
-                            bulk of the
-                            card's content.</p>
-                        <hr />
-                        <p class="card-text text-danger"><b>$1600</b></p>
-
-                    </div>
-
-                    <a href="#" class="card-link bg-success">
-                        <div class="card-footer text-center">
-                            Pay
+                        <div class="card-body">
+                            <p class="card-text text-muted">{{$element->description}}</p>
+                            <hr />
+                            <p class="card-text text-danger"><b>{{$element->amount}}</b></p>
                         </div>
-                    </a>
-                </div>
-
-            </div>
-            <div class="col-3">
-                <div class="card">
-                    <div class="card-header">
-                        <b>Jose Luis</b>
-                        <label class="float-right"><i class="fa fa-eye" aria-hidden="true"></i></label>
-                    </div>
-                    <div class="card-body">
-                        <p class="card-text text-muted">Some quick example text to build on the card title and make up the
-                            bulk of the
-                            card's content.</p>
-                        <hr />
-                        <p class="card-text text-danger"><b>$1600</b></p>
-
+                        <a href="#" class="card-link bg-success">
+                            <div class="card-footer text-center">
+                                Pay
+                            </div>
+                        </a>
                     </div>
 
-                    <a href="#" class="card-link bg-success">
-                        <div class="card-footer text-center">
-                            Pay
-                        </div>
-                    </a>
                 </div>
-
-            </div>
+            @endforeach
         </div>
     </div>
-
-
-
-
 
     <!-- Modals -->
     <div class="modal fade" id="newUserModal" tabindex="-1" role="dialog" aria-labelledby="newUserModalLabel"
@@ -103,7 +52,6 @@
                 <div class="modal-body">
 
                     <form>
-                    <button type="button" class="btn btn-primary" id="addBtn">ADD</button>
 
                         <div class="form-group">
                             <label for="name">Name</label>
@@ -149,6 +97,8 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="addBtn">ADD</button>
+
                 </div>
             </div>
         </div>
