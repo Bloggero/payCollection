@@ -103,6 +103,8 @@
                 <div class="modal-body">
 
                     <form>
+                    <button type="button" class="btn btn-primary" id="addBtn">ADD</button>
+
                         <div class="form-group">
                             <label for="name">Name</label>
                             <input type="text" class="form-control" id="name">
@@ -147,7 +149,6 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="addBtn">ADD</button>
                 </div>
             </div>
         </div>

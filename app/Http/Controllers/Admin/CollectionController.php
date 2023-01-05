@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Models\Collection;
 use Illuminate\Http\Request;
 
@@ -12,10 +13,13 @@ class CollectionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($request)
+    public function index(Request $request)
     {
-        if($request){
+        if(isset($request->type)){
             return response()->json(['success' => true]);
+        }else{
+            
+            return response()->json(['success' => false]);
         }
     }
 
