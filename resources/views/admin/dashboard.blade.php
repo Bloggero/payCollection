@@ -138,7 +138,7 @@
                             <input type="number" name="amount" id="amount" class="form-control">
                         </div>
                         <div class="form-group form-check">
-                            <input type="checkbox" class="form-check-input" id="extends">
+                            <input type="checkbox" class="form-check-input" id="extends_data">
                             <label class="form-check-label" for="extends">Extends?</label>
                         </div>
                     </form>
@@ -147,11 +147,12 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">ADD</button>
+                    <button type="button" class="btn btn-primary" id="addBtn">ADD</button>
                 </div>
             </div>
         </div>
     </div>
+    @csrf
 @stop
 
 @section('css')
@@ -159,7 +160,5 @@
 @stop
 
 @section('js')
-    <script>
-        console.log('Hi!');
-    </script>
+    <script src="{{ asset('js/dashboard.js') }}"></script>
 @stop
