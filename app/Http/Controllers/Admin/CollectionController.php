@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
+use App\Models\User;
 use App\Models\Collection;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
 
 class CollectionController extends Controller
 {
@@ -19,13 +22,14 @@ class CollectionController extends Controller
             
             switch ($request->type) {
                 case 'post':
-                    $request = CollectionController::newCollection($request);
+                    $requestToArray = $request;
+                    $request = CollectionController::newCollection($requestToArray);
                 break;
                 default:
                     return response()->json(['success' => false]);
                 break;
             }
-            return response()->json(['success' => true]);
+            return response()->json(['success2' => $request]);
 
         }else{
             
@@ -38,29 +42,47 @@ class CollectionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($request, $user)
     {
-        //
+        $user_id = $user;
+        $response = new Collection();
+        $response->user_id      = $user_id;
+        $response->description  = $request['description'];
+        $response->amount       = $request['amount'];
+        $response->credit_type  = $request['credit_type'];
+        $response->time_type    = $request['time_type'];
+        $response->date_info    = Date($request['date_info']);
+        $response->extends      = $request['extends'] == 'true' ? 1 : 0;
+
+        return $response->save();
+
     }
 
     /**
      * New Collection is here, first create a new user
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function newCollection(Request $request)
+    public function newCollection($request)
     {
-        // $response = new Collection();
-        // $response->user_id = $request->
-        $createNewUser = $request->name;
+        $newEmail = Str::remove(' ', $request->name) . '@example.com';
+        $thisDataForNewCollection = $request;
+        try {
+            $createNewUser = User::create([
+                'name' => $request->name,
+                'email' => $newEmail,
+                'role' => 'member',
+                'status' => '0',
+                'password' => Hash::make(Str::random(40)),
+            ]);
+        } catch (\Throwable $th) {
+            return false;
+        }
 
+        //en caso que si se ha guardado seguimos con el resto
+        $request = CollectionController::create($request, $createNewUser->id);
 
-
-
-
-        
-
+        return $request;
 
     }
 
@@ -72,14 +94,6 @@ class CollectionController extends Controller
      */
     public function store(Request $request)
     {
-        $response = new Collection();
-
-
-
-
-        
-
-
     }
 
     /**
