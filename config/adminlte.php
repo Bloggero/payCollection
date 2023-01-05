@@ -253,7 +253,7 @@ return [
     */
 
     'use_route_url' => false,
-    'dashboard_url' => 'dashboard',
+    'dashboard_url' => 'admin/dashboard',
     'logout_url' => 'logout',
     'login_url' => 'login',
     'register_url' => 'register',
@@ -321,12 +321,12 @@ return [
         ['header' => 'OPTIONS'],
         [
             'text' => 'Dashboard',
-            'url'  => 'dashboard',
+            'url'  => 'admin/dashboard',
             'icon' => 'fas fa-fw fa-lock',
         ],
         [
             'text' => 'profile',
-            'url'  => 'users',
+            'url'  => 'admin/users',
             'icon' => 'fas fa-fw fa-user',
         ],
         // [
