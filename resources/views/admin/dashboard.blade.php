@@ -9,8 +9,8 @@
 @section('content')
 
     <div class="container-fluid">
-        <div class="row">
-            <div class="col-12">
+        <div class="row" id="bigBox">
+            <div class="col-12" id="divBtnNewUser">
                 <button class="btn btn-primary float-right" data-toggle="modal" data-target="#newUserModal">New User</button>
             </div>
             {{-- {{dd($data)}} --}}
@@ -65,8 +65,6 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="addBtn">ADD</button>
-
                 </div>
             </div>
         </div>
@@ -85,10 +83,24 @@
                 <div class="modal-body">
 
                     <form>
-
-                        <div class="form-group">
-                            <label for="name">Name</label>
-                            <input type="text" class="form-control" id="name">
+                        <div class="form-row">
+                            <div class="form-group col-5">
+                                <label for="name">Name</label>
+                                <input type="text" class="form-control" id="name">
+                            </div>
+                            <div class="form-group col-1">
+                                <label style="color:white;">OR</label>
+                                <label>OR</label>
+                            </div>
+                            <div class="form-group col-6">
+                                <label for="name">Select</label>
+                                <select name="selectUser" id="selectUser" class="form-control">
+                                    <option value="nothing" selected>Select One</option>
+                                    @foreach ($users as $element)
+                                        <option value="{{$element->id}}" forName="{{$element->name}}">{{$element->name . ' / ' . $element->email}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label for="description">Description</label>
@@ -122,7 +134,7 @@
                         </div>
                         <div class="form-group form-check">
                             <input type="checkbox" class="form-check-input" id="extends_data">
-                            <label class="form-check-label" for="extends">Extends?</label>
+                            <label class="form-check-label" for="extends_data">Extends?</label>
                         </div>
                     </form>
 

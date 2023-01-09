@@ -25,16 +25,18 @@ class CollectionController extends Controller
                     $request = CollectionController::newCollection($requestToArray);
                 break;
                 default:
-                    return response()->json(['success' => false]);
+                    $request = response()->json(['success' => false]);
                 break;
             }
-            return response()->json(['success' => $request]);
+            return $request;
 
         }else{
             
             $getData = Collection::orderBy('id', 'desc')->get();/*use username in the element for foreing key*/
+            $getUsers = User::orderBy('id', 'desc')->get();
             return view('admin.dashboard', 
-                        ['data' => $getData]
+                        ['data' => $getData,
+                        'users' => $getUsers]
                     );
         }
     }
@@ -67,6 +69,18 @@ class CollectionController extends Controller
      */
     public function newCollection($request)
     {
+
+        if($request->user != 'nothing'){
+            $request = CollectionController::create($request, $request['user']);
+            
+            return response()->json([
+                'success' => $request, 
+                'user_id' => '', 
+                'name' => '', 
+                'email' => ''
+                ]);
+        }
+
         $newEmail = Str::remove(' ', $request->name) . '@example.com';
         $thisDataForNewCollection = $request;
         try {
@@ -84,7 +98,16 @@ class CollectionController extends Controller
         //en caso que si se ha guardado seguimos con el resto
         $request = CollectionController::create($request, $createNewUser->id);
 
-        return $request;
+
+            return response()->json([
+                                    'success' => $request, 
+                                    'user_id' => $createNewUser->id, 
+                                    'name' => $createNewUser->name, 
+                                    'email' => $createNewUser->email
+                                    ]);
+
+
+
 
     }
 
