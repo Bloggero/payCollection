@@ -13,23 +13,31 @@
             <div class="col-12">
                 <button class="btn btn-primary float-right" data-toggle="modal" data-target="#newUserModal">New User</button>
             </div>
-            {{dd($data)}}
+            {{-- {{dd($data)}} --}}
             @foreach ($data as $element)
-                <div class="col-3">
+                <div class="col-12 col-sm-12 col-md-4 col-lg-3">
                     <div class="card">
                         <div class="card-header">
-                            <b>{{$element->user_id}}</b>
-                            <label class="float-right"><i class="fa fa-eye" aria-hidden="true"></i></label>
+                            <b>{{ $element->username->name }}</b>
+                            <label class="float-right" data-toggle="modal" data-target="#showCardModal"><i class="fa fa-eye"
+                                    aria-hidden="true"></i></label>
                         </div>
                         <div class="card-body">
-                            <p class="card-text text-muted">{{$element->description}}</p>
+                            <p class="card-text text-muted">{{ $element->description }}</p>
                             <hr />
-                            <p class="card-text text-danger"><b>{{$element->amount}}</b></p>
+                            @if ($element->pay == 0)
+                                <p class="card-text text-danger"><b>${{ $element->amount }}</b></p>
+                            @else
+                                <p class="card-text text-success"><b>${{ $element->amount }}</b></p>
+                            @endif
                         </div>
-                        <a href="#" class="card-link bg-success">
-                            <div class="card-footer text-center">
-                                Pay
-                            </div>
+                        @if ($element->pay == 0)
+                            <a href="#" class="card-link bg-success">
+                            @else
+                                <a href="javascript:void(0)" class="card-link bg-secondary" disabled="true"
+                                    style="pointer-events: none;">
+                        @endif
+                        <div class="card-footer text-center">Pay</div>
                         </a>
                     </div>
 
@@ -39,6 +47,31 @@
     </div>
 
     <!-- Modals -->
+    <!-- CardInfo -->
+    <div class="modal fade" id="showCardModal" tabindex="-1" role="dialog" aria-labelledby="showCardModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="showCardModalLabel">Add new user</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    TABLA
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="addBtn">ADD</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- AddUser -->
     <div class="modal fade" id="newUserModal" tabindex="-1" role="dialog" aria-labelledby="newUserModalLabel"
         aria-hidden="true">
         <div class="modal-dialog" role="document">

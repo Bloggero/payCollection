@@ -8,4 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class Collection extends Model
 {
     use HasFactory;
+
+
+    /**
+     * Get the phone associated with the user.
+     */
+    public function username()
+    {
+        return $this->hasOne(User::class, 'id', 'user_id');
+    }
 }
