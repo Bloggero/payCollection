@@ -4,10 +4,7 @@ function add(){
     const userName = document.querySelector('#name').value || "Empty";
     const description = document.querySelector('#description').value;
     const amount = document.querySelector('#amount').value;
-    const params = {'type' : 'post', 'name' : userName, 'description' : description, 'credit_type' : credit_type.value, 'date_info' : date_info.value, 'time_type' : time_type.value, 'amount' : amount, 'extends' : extends_data.checked, '_token' : csrf};
-    console.log('csrf', csrf);
-console.log('params', params);
-console.log('desssscription', description);
+    const params = {'type' : 'post', 'name' : userName, 'user' : selectUser.value, 'description' : description, 'credit_type' : credit_type.value, 'date_info' : date_info.value, 'time_type' : time_type.value, 'amount' : amount, 'extends' : extends_data.checked, '_token' : csrf};
 
 $.ajax({
         url: 'dashboard/request',
@@ -24,15 +21,24 @@ $.ajax({
         if(response.success){
             $("#newUserModal").modal('hide');
             msgSweetAlert('success');
-            console.log('amount', amount);
             const container = document.createElement('div');
                 container.classList.add("col-12", "col-sm-12", "col-md-4", "col-lg-3");
             const card = document.createElement("div");
                 card.classList.add("card");
             const cardHeader = document.createElement("div");
                 cardHeader.classList.add("card-header");
-            const username = document.createElement("b");
-                username.innerText = userName;
+            const bUsername = document.createElement("b");
+                bUsername.innerText = userName;
+
+                if(selectUser.value != 'nothing'){
+                    bUsername.innerText = selectUser.options[selectUser.selectedIndex].getAttribute("forName");
+                }else{
+                    const selectOption = document.createElement("option");
+                        option.value = 66;
+                        option.setAttribute("forName", "nombre");
+                        option.innerText = "nombre / correo";
+                }
+
             const labelShowModal = document.createElement("label");
                 labelShowModal.classList.add("float-right");
                 labelShowModal.setAttribute("data-toggle", "modal");
@@ -59,7 +65,7 @@ $.ajax({
 
             container.appendChild(card);
                 card.appendChild(cardHeader);
-                    cardHeader.appendChild(username);
+                    cardHeader.appendChild(bUsername);
                     cardHeader.appendChild(labelShowModal);
                         labelShowModal.appendChild(iconLabel);
                 card.appendChild(cardBody);
@@ -71,6 +77,16 @@ $.ajax({
                     pay.appendChild(cardFooter);
                 
             divBtnNewUser.after(container);
+
+            document.querySelector('#name').value = '';
+            document.querySelector('#description').value = '';
+            credit_type.value = 'from';
+            date_info.value = new Date();
+            time_type.value = 'week';
+            document.querySelector('#amount').value = '';
+            extends_data.checked = false;
+
+
 
         }else{
             msgSweetAlert('error');
@@ -127,5 +143,12 @@ function msgSweetAlert(value){
             break;
     }
 }
+
+
+
+selectUser.addEventListener('click', function(){
+
+
+})
 
 addBtn.addEventListener('click', add);

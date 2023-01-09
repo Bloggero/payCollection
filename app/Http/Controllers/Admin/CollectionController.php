@@ -33,8 +33,10 @@ class CollectionController extends Controller
         }else{
             
             $getData = Collection::orderBy('id', 'desc')->get();/*use username in the element for foreing key*/
+            $getUsers = User::orderBy('id', 'desc')->get();
             return view('admin.dashboard', 
-                        ['data' => $getData]
+                        ['data' => $getData,
+                        'users' => $getUsers]
                     );
         }
     }
@@ -67,6 +69,12 @@ class CollectionController extends Controller
      */
     public function newCollection($request)
     {
+
+        if($request->user != 'nothing'){
+            $request = CollectionController::create($request, $request['user']);
+            return $request;
+        }
+
         $newEmail = Str::remove(' ', $request->name) . '@example.com';
         $thisDataForNewCollection = $request;
         try {
