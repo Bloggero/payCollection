@@ -25,10 +25,10 @@ class CollectionController extends Controller
                     $request = CollectionController::newCollection($requestToArray);
                 break;
                 default:
-                    return response()->json(['success' => false]);
+                    $request = response()->json(['success' => false]);
                 break;
             }
-            return response()->json(['success' => $request]);
+            return $request;
 
         }else{
             
@@ -72,7 +72,13 @@ class CollectionController extends Controller
 
         if($request->user != 'nothing'){
             $request = CollectionController::create($request, $request['user']);
-            return $request;
+            
+            return response()->json([
+                'success' => $request, 
+                'user_id' => '', 
+                'name' => '', 
+                'email' => ''
+                ]);
         }
 
         $newEmail = Str::remove(' ', $request->name) . '@example.com';
@@ -92,7 +98,16 @@ class CollectionController extends Controller
         //en caso que si se ha guardado seguimos con el resto
         $request = CollectionController::create($request, $createNewUser->id);
 
-        return $request;
+
+            return response()->json([
+                                    'success' => $request, 
+                                    'user_id' => $createNewUser->id, 
+                                    'name' => $createNewUser->name, 
+                                    'email' => $createNewUser->email
+                                    ]);
+
+
+
 
     }
 

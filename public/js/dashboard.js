@@ -18,6 +18,10 @@ $.ajax({
             500: () => { msgSweetAlert('500') }           
         },
     }).done(function(response){
+        console.log('response', response);
+        console.log('response', response.name);
+        console.log('response', response.email);
+        console.log('response', response.id);
         if(response.success){
             $("#newUserModal").modal('hide');
             msgSweetAlert('success');
@@ -34,9 +38,10 @@ $.ajax({
                     bUsername.innerText = selectUser.options[selectUser.selectedIndex].getAttribute("forName");
                 }else{
                     const selectOption = document.createElement("option");
-                        option.value = 66;
-                        option.setAttribute("forName", "nombre");
-                        option.innerText = "nombre / correo";
+                        selectOption.value = response.user_id;
+                        selectOption.setAttribute("forName", `${response.name}`);
+                        selectOption.innerText = `${response.name} / ${response.email}`;
+                        selectUser.appendChild(selectOption);
                 }
 
             const labelShowModal = document.createElement("label");
