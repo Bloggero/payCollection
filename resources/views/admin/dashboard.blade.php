@@ -9,8 +9,8 @@
 @section('content')
 
     <div class="container-fluid">
-        <div class="row">
-            <div class="col-12">
+        <div class="row" id="bigBox">
+            <div class="col-12" id="divBtnNewUser">
                 <button class="btn btn-primary float-right" data-toggle="modal" data-target="#newUserModal">New User</button>
             </div>
             {{-- {{dd($data)}} --}}
@@ -65,8 +65,6 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="addBtn">ADD</button>
-
                 </div>
             </div>
         </div>
