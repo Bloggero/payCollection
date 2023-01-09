@@ -22,6 +22,8 @@ return new class extends Migration
             $table->string('time_type');
             $table->date('date_info');
             $table->boolean('extends');
+            $table->boolean('pay')->default(false);
+            $table->boolean('status')->default(true);
             $table->timestamps();
         });
     }
