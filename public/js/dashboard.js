@@ -18,10 +18,6 @@ $.ajax({
             500: () => { msgSweetAlert('500') }           
         },
     }).done(function(response){
-        console.log('response', response);
-        console.log('response', response.name);
-        console.log('response', response.email);
-        console.log('response', response.id);
         if(response.success){
             $("#newUserModal").modal('hide');
             msgSweetAlert('success');
