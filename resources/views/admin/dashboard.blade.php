@@ -13,18 +13,18 @@
             <div class="col-12">
                 <button class="btn btn-primary float-right" data-toggle="modal" data-target="#newUserModal">New User</button>
             </div>
-            {{dd($data)}}
+            {{-- {{dd($data)}} --}}
             @foreach ($data as $element)
                 <div class="col-3">
                     <div class="card">
                         <div class="card-header">
-                            <b>{{$element->user_id}}</b>
+                            <b>{{$element->username->name}}</b>
                             <label class="float-right"><i class="fa fa-eye" aria-hidden="true"></i></label>
                         </div>
                         <div class="card-body">
                             <p class="card-text text-muted">{{$element->description}}</p>
                             <hr />
-                            <p class="card-text text-danger"><b>{{$element->amount}}</b></p>
+                            <p class="card-text text-danger"><b>${{$element->amount}}</b></p>
                         </div>
                         <a href="#" class="card-link bg-success">
                             <div class="card-footer text-center">

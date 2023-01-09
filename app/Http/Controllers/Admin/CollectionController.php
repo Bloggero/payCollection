@@ -32,7 +32,7 @@ class CollectionController extends Controller
 
         }else{
             
-            $getData = Collection::all();
+            $getData = Collection::all();/*use username in the element for foreing key*/
             return view('admin.dashboard', 
                         ['data' => $getData]
                     );
