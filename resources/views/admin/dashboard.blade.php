@@ -21,7 +21,7 @@
                             <b>{{ $element->username->name }}</b>
                             {{-- <label class="float-right" data-toggle="modal" data-target="#showCardModal"><i class="fa fa-eye" --}}
                                 <label class="float-right"><i class="fa fa-eye showUser"
-                                    aria-hidden="true" id="showUser--{{$element->id}}" user="{{$element->id}}"></i></label>
+                                    aria-hidden="true" id="showUser-{{$element->user_id}}" user="{{$element->user_id}}"></i></label>
                         </div>
                         <div class="card-body">
                             <p class="card-text text-muted">{{ $element->description }}</p>

@@ -151,10 +151,33 @@ function msgSweetAlert(value){
 const dashboardItems = document.querySelectorAll('.showUser');
 
 function show(value) {
-    console.log('value', value);
-    console.log(value.target.id);
-    console.log(value.target.user);
-    console.log('value.target.getAttribute("user")', value.target.getAttribute("user"));
+    const user_id = value.target.getAttribute("user");
+    const params = {'type' : 'get', 'user_id' : user_id, '_token' : csrf};
+
+    $.ajax({
+        url: 'dashboard/request',
+        method: 'POST',
+        data: params,
+        beforeSend: function () {
+        
+        },
+        statusCode: {
+            404: () => { msgSweetAlert('404') },
+            500: () => { msgSweetAlert('500') }           
+        },
+    }).done(function(response){
+        console.log('response', response);
+        if(response.success){
+            // $("#newUserModal").modal('hide');
+            // msgSweetAlert('success');
+
+        
+
+        }else{
+            msgSweetAlert('error');
+        }
+    }).then(()=>{
+    });
 
 }
 

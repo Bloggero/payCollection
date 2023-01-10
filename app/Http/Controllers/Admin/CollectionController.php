@@ -24,6 +24,9 @@ class CollectionController extends Controller
                     $requestToArray = $request;
                     $request = CollectionController::newCollection($requestToArray);
                 break;
+                case 'get':
+                    $request = CollectionController::show($request->user_id);
+                break;
                 default:
                     $request = response()->json(['success' => false]);
                 break;
@@ -124,12 +127,12 @@ class CollectionController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Collection  $collection
      * @return \Illuminate\Http\Response
      */
-    public function show(Collection $collection)
+    public function show($id)
     {
-        //
+        $response = Collection::orderBy('id', 'desc')->where('user_id', $id)->get();
+        return response()->json(['success' => true, 'items' => $response]);
     }
 
     /**
