@@ -27,6 +27,9 @@ class CollectionController extends Controller
                 case 'get':
                     $request = CollectionController::show($request->user_id);
                 break;
+                case 'update':
+                    $request = CollectionController::update($request->collection);
+                break;
                 default:
                     $request = response()->json(['success' => false]);
                 break;
@@ -149,13 +152,20 @@ class CollectionController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Collection  $collection
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Collection $collection)
+    public function update($id)
     {
         //
+        $request = Collection::findOrFail($id);
+        $request->pay = 1;
+        if($request->save()){
+            return response()->json(['success' => true]);
+        }else{
+            return response()->json(['success' => false]);
+        }
+
+
     }
 
     /**

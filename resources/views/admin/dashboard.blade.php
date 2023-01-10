@@ -27,18 +27,18 @@
                             <p class="card-text text-muted">{{ $element->description }}</p>
                             <hr />
                             @if ($element->pay == 0)
-                                <p class="card-text text-danger"><b>${{ $element->amount }}</b></p>
+                                <p class="card-text text-danger" id="amount-{{$element->id}}"><b>${{ $element->amount }}</b></p>
                             @else
                                 <p class="card-text text-success"><b>${{ $element->amount }}</b></p>
                             @endif
                         </div>
                         @if ($element->pay == 0)
-                            <a href="#" class="card-link bg-success">
+                            <a href="javascript:void(0)" class="card-link bg-success paynow" id="a-{{$element->id}}">
                             @else
                                 <a href="javascript:void(0)" class="card-link bg-secondary" disabled="true"
                                     style="pointer-events: none;">
                         @endif
-                        <div class="card-footer text-center">Pay</div>
+                        <div class="card-footer text-center" collection="{{$element->id}}" id="collection-{{$element->id}}">Pay</div>
                         </a>
                     </div>
 
