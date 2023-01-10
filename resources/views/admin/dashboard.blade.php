@@ -19,8 +19,9 @@
                     <div class="card">
                         <div class="card-header">
                             <b>{{ $element->username->name }}</b>
-                            <label class="float-right" data-toggle="modal" data-target="#showCardModal"><i class="fa fa-eye"
-                                    aria-hidden="true"></i></label>
+                            {{-- <label class="float-right" data-toggle="modal" data-target="#showCardModal"><i class="fa fa-eye" --}}
+                                <label class="float-right"><i class="fa fa-eye showUser"
+                                    aria-hidden="true" id="showUser--{{$element->id}}" user="{{$element->id}}"></i></label>
                         </div>
                         <div class="card-body">
                             <p class="card-text text-muted">{{ $element->description }}</p>
@@ -60,7 +61,37 @@
                 </div>
                 <div class="modal-body">
 
-                    TABLA
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Monto</th>
+                                <th>Pagado</th>
+                                <th>Fecha de Creación</th>
+                                <th>Fecha de Pago</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>$100</td>
+                                <td>Sí</td>
+                                <td>2022-01-01</td>
+                                <td>2022-01-02</td>
+                            </tr>
+                            <tr>
+                                <td>$200</td>
+                                <td>No</td>
+                                <td>2022-02-01</td>
+                                <td>N/A</td>
+                            </tr>
+                            <tr>
+                                <td>$150</td>
+                                <td>Sí</td>
+                                <td>2022-03-01</td>
+                                <td>2022-03-02</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
 
                 </div>
                 <div class="modal-footer">
@@ -97,7 +128,8 @@
                                 <select name="selectUser" id="selectUser" class="form-control">
                                     <option value="nothing" selected>Select One</option>
                                     @foreach ($users as $element)
-                                        <option value="{{$element->id}}" forName="{{$element->name}}">{{$element->name . ' / ' . $element->email}}</option>
+                                        <option value="{{ $element->id }}" forName="{{ $element->name }}">
+                                            {{ $element->name . ' / ' . $element->email }}</option>
                                     @endforeach
                                 </select>
                             </div>

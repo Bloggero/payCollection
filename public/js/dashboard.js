@@ -21,6 +21,7 @@ $.ajax({
         if(response.success){
             $("#newUserModal").modal('hide');
             msgSweetAlert('success');
+
             const container = document.createElement('div');
                 container.classList.add("col-12", "col-sm-12", "col-md-4", "col-lg-3");
             const card = document.createElement("div");
@@ -147,9 +148,17 @@ function msgSweetAlert(value){
 
 
 
-selectUser.addEventListener('click', function(){
+const dashboardItems = document.querySelectorAll('.showUser');
 
+function show(value) {
+    console.log('value', value);
+    console.log(value.target.id);
+    console.log(value.target.user);
+    console.log('value.target.getAttribute("user")', value.target.getAttribute("user"));
 
-})
+}
+
+dashboardItems.forEach(box => box.addEventListener('click', show));
+
 
 addBtn.addEventListener('click', add);
