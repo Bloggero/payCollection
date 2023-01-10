@@ -59,36 +59,18 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body justify-content-center">
 
                     <table class="table table-bordered">
                         <thead>
                             <tr>
-                                <th>Monto</th>
-                                <th>Pagado</th>
-                                <th>Fecha de Creación</th>
-                                <th>Fecha de Pago</th>
+                                <th>Amount</th>
+                                <th>Paid</th>
+                                <th>Created</th>
+                                <th>Updated</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <td>$100</td>
-                                <td>Sí</td>
-                                <td>2022-01-01</td>
-                                <td>2022-01-02</td>
-                            </tr>
-                            <tr>
-                                <td>$200</td>
-                                <td>No</td>
-                                <td>2022-02-01</td>
-                                <td>N/A</td>
-                            </tr>
-                            <tr>
-                                <td>$150</td>
-                                <td>Sí</td>
-                                <td>2022-03-01</td>
-                                <td>2022-03-02</td>
-                            </tr>
+                        <tbody id="userCollectionsTable">
                         </tbody>
                     </table>
 

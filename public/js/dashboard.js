@@ -170,8 +170,31 @@ function show(value) {
         if(response.success){
             // $("#newUserModal").modal('hide');
             // msgSweetAlert('success');
+            const items = response.items.reverse(); 
+            items.forEach(element => {
+                const tr = document.createElement("tr");
+                const tdAmount = document.createElement("td");
+                const tdPay = document.createElement("td");
+                const tdCreated = document.createElement("td");
+                const tdPayment = document.createElement("td");
+                const amountLocal = element.amount;
+                const currency = function(number){
+                    return new Intl.NumberFormat('en-us', {style: 'currency',currency: 'USD', minimumFractionDigits: 2}).format(number);
+                };
+                tdAmount.innerText = currency(amountLocal);
+                element.pay ? tr.classList.add("table-success") : tr.classList.add("table-danger");
+                tdPay.innerText = element.pay ? 'Yes' : 'No';
+                tdCreated.innerText = new Date(element.created_at).toLocaleDateString();
+                tdPayment.innerText = new Date(element.updated_at).toLocaleDateString();
+                const al = new Date(element.updated_at, )
 
-        
+                tr.appendChild(tdAmount);
+                tr.appendChild(tdPay);
+                tr.appendChild(tdCreated);
+                tr.appendChild(tdPayment);
+                userCollectionsTable.appendChild(tr);
+                $("#showCardModal").modal('show');
+            });
 
         }else{
             msgSweetAlert('error');
