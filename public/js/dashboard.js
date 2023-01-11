@@ -78,11 +78,13 @@ function add() {
                 const hr = document.createElement("hr");
                 const divAmount = document.createElement("p");
                 divAmount.classList.add("card-text", "text-danger");
+                divAmount.id = `amount-${amount}`;
                 const bAmount = document.createElement("b");
                 bAmount.innerText = `$${amount}`;
                 const pay = document.createElement("a");
-                pay.classList.add("card-link", "bg-success");
+                pay.classList.add("card-link", "bg-success", "paynow");
                 pay.setAttribute("href", "#");
+                // pay.id = `a-${$element->id}`;
                 const cardFooter = document.createElement("div");
                 cardFooter.classList.add("card-footer", "text-center");
                 cardFooter.innerText = "Pay";
@@ -159,6 +161,7 @@ function msgSweetAlert(value) {
 function show(value) {
     const user_id = value.target.getAttribute("user");
     const params = { type: "get", user_id: user_id, _token: csrf };
+    userCollectionsTable.innerHTML = '';
 
     $.ajax({
         url: "dashboard/request",
