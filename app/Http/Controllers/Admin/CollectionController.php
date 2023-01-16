@@ -20,9 +20,32 @@ class CollectionController extends Controller
     {
         if(isset($request->type)){
             switch ($request->type) {
+                case 'index':
+                        /**
+                        * Value can be:
+                        * all
+                        * notPayed
+                        * paid
+                        */
+
+                        switch ($request->value) {
+                            case 'all':
+                                $data = Collection::orderBy('id', 'desc')->get();
+                            break;
+                            case 'notPayed':
+                                $data = Collection::where('pay', 0)->orderBy('id', 'desc')->get();
+                            break;
+                            case 'paid':
+                                $data = Collection::where('pay', 1)->orderBy('id', 'desc')->get();
+                            break;
+                            
+                            default:
+                                break;
+                        }
+                    $request = response()->json(['success' => true, 'data' => $data]);
+                break;
                 case 'post':
-                    $requestToArray = $request;
-                    $request = CollectionController::newCollection($requestToArray);
+                    $request = CollectionController::newCollection($request);
                 break;
                 case 'get':
                     $request = CollectionController::show($request->user_id);
