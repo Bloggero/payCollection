@@ -14,30 +14,34 @@
                 <button class="btn btn-primary float-right" data-toggle="modal" data-target="#newUserModal">New User</button>
             </div>
             {{-- {{dd($data)}} --}}
+            @if (count($data) < 0)
+                <h1>No items to display yet.</h1>
+            @endif
             @foreach ($data as $element)
                 <div class="col-12 col-sm-12 col-md-4 col-lg-3">
                     <div class="card">
                         <div class="card-header">
                             <b>{{ $element->username->name }}</b>
-                            <label class="float-right" data-toggle="modal" data-target="#showCardModal"><i class="fa fa-eye"
-                                    aria-hidden="true"></i></label>
+                            {{-- <label class="float-right" data-toggle="modal" data-target="#showCardModal"><i class="fa fa-eye" --}}
+                                <label class="float-right"><i class="fa fa-eye showUser"
+                                    aria-hidden="true" id="showUser-{{$element->user_id}}" user="{{$element->user_id}}"></i></label>
                         </div>
                         <div class="card-body">
                             <p class="card-text text-muted">{{ $element->description }}</p>
                             <hr />
                             @if ($element->pay == 0)
-                                <p class="card-text text-danger"><b>${{ $element->amount }}</b></p>
+                                <p class="card-text text-danger" id="amount-{{$element->id}}"><b>${{ $element->amount }}</b></p>
                             @else
                                 <p class="card-text text-success"><b>${{ $element->amount }}</b></p>
                             @endif
                         </div>
                         @if ($element->pay == 0)
-                            <a href="#" class="card-link bg-success">
+                            <a href="javascript:void(0)" class="card-link bg-success paynow" id="a-{{$element->id}}">
                             @else
                                 <a href="javascript:void(0)" class="card-link bg-secondary" disabled="true"
                                     style="pointer-events: none;">
                         @endif
-                        <div class="card-footer text-center">Pay</div>
+                        <div class="card-footer text-center" collection="{{$element->id}}" id="collection-{{$element->id}}">Pay</div>
                         </a>
                     </div>
 
@@ -58,9 +62,21 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body justify-content-center">
 
-                    TABLA
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Amount</th>
+                                <th>Paid</th>
+                                <th>Created</th>
+                                <th>Updated</th>
+                            </tr>
+                        </thead>
+                        <tbody id="userCollectionsTable">
+                        </tbody>
+                    </table>
+
 
                 </div>
                 <div class="modal-footer">
@@ -97,7 +113,8 @@
                                 <select name="selectUser" id="selectUser" class="form-control">
                                     <option value="nothing" selected>Select One</option>
                                     @foreach ($users as $element)
-                                        <option value="{{$element->id}}" forName="{{$element->name}}">{{$element->name . ' / ' . $element->email}}</option>
+                                        <option value="{{ $element->id }}" forName="{{ $element->name }}">
+                                            {{ $element->name . ' / ' . $element->email }}</option>
                                     @endforeach
                                 </select>
                             </div>

@@ -24,6 +24,12 @@ class CollectionController extends Controller
                     $requestToArray = $request;
                     $request = CollectionController::newCollection($requestToArray);
                 break;
+                case 'get':
+                    $request = CollectionController::show($request->user_id);
+                break;
+                case 'update':
+                    $request = CollectionController::update($request->collection);
+                break;
                 default:
                     $request = response()->json(['success' => false]);
                 break;
@@ -42,36 +48,15 @@ class CollectionController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create($request, $user)
-    {
-        $user_id = $user;
-        $response = new Collection();
-        $response->user_id      = $user_id;
-        $response->description  = $request['description'];
-        $response->amount       = $request['amount'];
-        $response->credit_type  = $request['credit_type'];
-        $response->time_type    = $request['time_type'];
-        $response->date_info    = Date($request['date_info']);
-        $response->extends      = $request['extends'] == 'true' ? 1 : 0;
-
-        return $response->save();
-
-    }
-
-    /**
      * New Collection is here, first create a new user
      *
      * @return \Illuminate\Http\Response
      */
     public function newCollection($request)
     {
-
+        //segun el curso de laravel 6 se guardan los datos en store y ahí se hacen las validaciones con $request->validate([])
         if($request->user != 'nothing'){
-            $request = CollectionController::create($request, $request['user']);
+            $request = CollectionController::store($request, $request['user']);
             
             return response()->json([
                 'success' => $request, 
@@ -96,7 +81,7 @@ class CollectionController extends Controller
         }
 
         //en caso que si se ha guardado seguimos con el resto
-        $request = CollectionController::create($request, $createNewUser->id);
+        $request = CollectionController::store($request, $createNewUser->id);
 
 
             return response()->json([
@@ -106,30 +91,39 @@ class CollectionController extends Controller
                                     'email' => $createNewUser->email
                                     ]);
 
-
-
-
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store($request, $user)
     {
+
+        $user_id = $user;
+        $response = new Collection();
+        $response->user_id      = $user_id;
+        $response->description  = $request['description'];
+        $response->amount       = $request['amount'];
+        $response->credit_type  = $request['credit_type'];
+        $response->time_type    = $request['time_type'];
+        $response->date_info    = Date($request['date_info']);
+        $response->extends      = $request['extends'] == 'true' ? 1 : 0;
+
+        return $response->save();
+
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Collection  $collection
      * @return \Illuminate\Http\Response
      */
-    public function show(Collection $collection)
+    public function show($id)
     {
-        //
+        $response = Collection::orderBy('id', 'desc')->where('user_id', $id)->get();
+        return response()->json(['success' => true, 'items' => $response]);
     }
 
     /**
@@ -146,13 +140,20 @@ class CollectionController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Collection  $collection
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Collection $collection)
+    public function update($id)
     {
         //
+        $request = Collection::findOrFail($id);
+        $request->pay = 1;
+        if($request->save()){
+            return response()->json(['success' => true]);
+        }else{
+            return response()->json(['success' => false]);
+        }
+
+
     }
 
     /**
