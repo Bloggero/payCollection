@@ -32,6 +32,7 @@ function add() {
         },
     })
         .done(function (response) {
+            console.log('response', response);
             if (response.success) {
                 $("#newUserModal").modal("hide");
                 msgSweetAlert("success");
@@ -65,28 +66,38 @@ function add() {
 
                 const labelShowModal = document.createElement("label");
                 labelShowModal.classList.add("float-right");
-                labelShowModal.setAttribute("data-toggle", "modal");
-                labelShowModal.setAttribute("data-target", "#showCardModal");
+
                 const iconLabel = document.createElement("i");
-                iconLabel.classList.add("fa", "fa-eye");
+                iconLabel.classList.add("fa", "fa-eye", "showUser");
                 iconLabel.setAttribute("aria-hidden", "true");
+                iconLabel.setAttribute("id", "showUser-42");
+                iconLabel.setAttribute("user", "42");
+
                 const cardBody = document.createElement("div");
                 cardBody.classList.add("card-body");
+
                 const divDescription = document.createElement("p");
                 divDescription.classList.add("card-text", "text-muted");
                 divDescription.innerText = description;
+
                 const hr = document.createElement("hr");
+
                 const divAmount = document.createElement("p");
                 divAmount.classList.add("card-text", "text-danger");
                 divAmount.id = `amount-${amount}`;
+                
                 const bAmount = document.createElement("b");
                 bAmount.innerText = `$${amount}`;
+
                 const pay = document.createElement("a");
+                pay.setAttribute("href", "javascript:void(0)");
                 pay.classList.add("card-link", "bg-success", "paynow");
-                pay.setAttribute("href", "#");
-                // pay.id = `a-${$element->id}`;
+                pay.id = `a-53`;
+                
                 const cardFooter = document.createElement("div");
                 cardFooter.classList.add("card-footer", "text-center");
+                cardFooter.setAttribute("collection", "53");
+                cardFooter.id = `collection-53`;
                 cardFooter.innerText = "Pay";
 
                 container.appendChild(card);

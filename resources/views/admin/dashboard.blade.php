@@ -14,6 +14,9 @@
                 <button class="btn btn-primary float-right" data-toggle="modal" data-target="#newUserModal">New User</button>
             </div>
             {{-- {{dd($data)}} --}}
+            @if (count($data) < 0)
+                <h1>No items to display yet.</h1>
+            @endif
             @foreach ($data as $element)
                 <div class="col-12 col-sm-12 col-md-4 col-lg-3">
                     <div class="card">
