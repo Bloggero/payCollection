@@ -37,91 +37,13 @@ function add() {
                 $("#newUserModal").modal("hide");
                 msgSweetAlert("success");
 
-                const container = document.createElement("div");
-                container.classList.add(
-                    "col-12",
-                    "col-sm-12",
-                    "col-md-4",
-                    "col-lg-3"
-                );
-                const card = document.createElement("div");
-                card.classList.add("card");
-                const cardHeader = document.createElement("div");
-                cardHeader.classList.add("card-header");
-                const bUsername = document.createElement("b");
-                bUsername.innerText = userName;
+                /*
 
-                if (selectUser.value != "nothing") {
-                    bUsername.innerText =
-                        selectUser.options[
-                            selectUser.selectedIndex
-                        ].getAttribute("forName");
-                } else {
-                    const selectOption = document.createElement("option");
-                    selectOption.value = response.user_id;
-                    selectOption.setAttribute("forName", `${response.name}`);
-                    selectOption.innerText = `${response.name} / ${response.email}`;
-                    selectUser.appendChild(selectOption);
-                }
-
-                const labelShowModal = document.createElement("label");
-                labelShowModal.classList.add("float-right");
-
-                const iconLabel = document.createElement("i");
-                iconLabel.classList.add("fa", "fa-eye", "showUser");
-                iconLabel.setAttribute("aria-hidden", "true");
-                iconLabel.setAttribute("id", "showUser-42");
-                iconLabel.setAttribute("user", "42");
-
-                const cardBody = document.createElement("div");
-                cardBody.classList.add("card-body");
-
-                const divDescription = document.createElement("p");
-                divDescription.classList.add("card-text", "text-muted");
-                divDescription.innerText = description;
-
-                const hr = document.createElement("hr");
-
-                const divAmount = document.createElement("p");
-                divAmount.classList.add("card-text", "text-danger");
-                divAmount.id = `amount-${amount}`;
+                vamos a estrar los datos del nuevo collection y los vamos a agregar o ya veremos algo que sea rapido 
                 
-                const bAmount = document.createElement("b");
-                bAmount.innerText = `$${amount}`;
+                */
 
-                const pay = document.createElement("a");
-                pay.setAttribute("href", "javascript:void(0)");
-                pay.classList.add("card-link", "bg-success", "paynow");
-                pay.id = `a-53`;
-                
-                const cardFooter = document.createElement("div");
-                cardFooter.classList.add("card-footer", "text-center");
-                cardFooter.setAttribute("collection", "53");
-                cardFooter.id = `collection-53`;
-                cardFooter.innerText = "Pay";
 
-                container.appendChild(card);
-                card.appendChild(cardHeader);
-                cardHeader.appendChild(bUsername);
-                cardHeader.appendChild(labelShowModal);
-                labelShowModal.appendChild(iconLabel);
-                card.appendChild(cardBody);
-                cardBody.appendChild(divDescription);
-                cardBody.appendChild(hr);
-                cardBody.appendChild(divAmount);
-                divAmount.appendChild(bAmount);
-                card.appendChild(pay);
-                pay.appendChild(cardFooter);
-
-                divBtnNewUser.after(container);
-
-                document.querySelector("#name").value = "";
-                document.querySelector("#description").value = "";
-                credit_type.value = "from";
-                date_info.value = new Date();
-                time_type.value = "week";
-                document.querySelector("#amount").value = "";
-                extends_data.checked = false;
             } else {
                 msgSweetAlert("error");
             }
@@ -233,7 +155,16 @@ function show(value) {
 }
 
 function pay(value) {
-    const collection = value.target.getAttribute("collection");
+    let collection;
+
+    if(typeof value === 'number'){
+        collection = value;
+
+    }else{
+        collection = value.target.getAttribute("collection");
+    }
+
+
     const params = { type: "update", collection: collection, _token: csrf };
 
     Swal.fire({
@@ -265,13 +196,14 @@ function pay(value) {
                 },
             })
                 .done(function (response) {
+                    console.log('response', response);
                     if (response.success) {
-                        const thisElementId = value.target.id;
-                        document.querySelector(`#${thisElementId}`).classList.add('bg-secondary');
-                        document.querySelector(`#a-${collection}`).classList.remove('paynow');
-                        document.querySelector(`#a-${collection}`).style = "pointer-events: none;";
-                        document.querySelector(`#amount-${collection}`).classList.remove("text-danger");
-                        document.querySelector(`#amount-${collection}`).classList.add("text-success");
+                        // const thisElementId = value.target.id;
+                        // document.querySelector(`#${thisElementId}`).classList.add('bg-secondary');
+                        // document.querySelector(`#a-${collection}`).classList.remove('paynow');
+                        // document.querySelector(`#a-${collection}`).style = "pointer-events: none;";
+                        // document.querySelector(`#amount-${collection}`).classList.remove("text-danger");
+                        // document.querySelector(`#amount-${collection}`).classList.add("text-success");
                         
                         /*thisElementId is id for every collection and next we add a class bg-secondary for change color and block her pinter-events and remove paynow class for the "a" element and change text-danger for text-success in the amount*/
                         msgSweetAlert("success");
@@ -283,6 +215,11 @@ function pay(value) {
         }
     });
 }
+
+
+
+
+
 /*This is for every button pay for show a sweetAlert question*/
 let payItems = document.querySelectorAll(".paynow");
 payItems.forEach((element) => element.addEventListener("click", pay));
@@ -292,3 +229,26 @@ const dashboardItems = document.querySelectorAll(".showUser");
 dashboardItems.forEach((element) => element.addEventListener("click", show));
 
 addBtn.addEventListener("click", add);
+
+
+/*
+
+
+let payItems = document.querySelectorAll(".paynow");
+payItems.forEach((element) => element.addEventListener("click", pay));
+
+const dashboardItems = document.querySelectorAll(".showUser");
+dashboardItems.forEach((element) => element.addEventListener("click", show));
+
+addBtn.addEventListener("click", add);
+
+
+
+
+Esto hay que revisarlo ya que en el otro lado tenemos que usar 
+        collection = value.target.getAttribute("collection");
+
+        esetarget no me gusta por lo que tengo que investigar bien bien como está funcionando ya que en el html tendría que agregar el attribute especificamente en el dato que mandamos a traer desde querySelecectorAll
+
+
+*/
