@@ -91,16 +91,16 @@
                     <button type="buttom" class="btn btn-success mb-2">Save</button>
                 </form>
             </div>
-            <div class="col-12 mb-2 mr-2" id="optionBar">
-                <select name="year" id="year" class="col-3 float-right form-control">
-                    <option value="">2016</option>
-                    <option value="">2017</option>
-                    <option value="">2018</option>
-                    <option value="">2019</option>
+            <div class="col-12 mb-2 mr-2 form-inline" id="optionBar" style="justify-content: flex-end">
+                <select name="year" id="year" class="col-1 form-control mx-sm-3">
+                    <option value="2016">2016</option>
+                    <option value="2017">2017</option>
+                    <option value="2018">2018</option>
+                    <option value="2019">2019</option>
                 </select>
-                <select name="" id="" class="col-3 float-right form-control">
-                    <option value="">march</option>
+                <select name="month" id="month" class="col-3 form-control mx-sm-1">
                 </select>
+                <button  name="getData" id="getData" class="btn btn-primary mx-sm-1">Get Data</button>
             </div>
             <div class="col-12 mb-2" id="informationTable">
                 <table class="table table-striped table-bordered">
@@ -125,6 +125,7 @@
             </div>
         </div>
     </div>
+    @csrf
 
 @stop
 
@@ -133,5 +134,5 @@
 @stop
 
 @section('js')
-    <script src="{{ asset('js/dashboard.js') }}"></script>
+    <script src="{{ asset('js/statistics.js') }}"></script>
 @stop

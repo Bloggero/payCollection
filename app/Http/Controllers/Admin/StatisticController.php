@@ -6,7 +6,7 @@ namespace App\Http\Controllers\Admin;
 use App\Models\Statistic;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-
+use Error;
 use Illuminate\Support\Str;
 
 
@@ -17,11 +17,39 @@ class StatisticController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        if(isset($request->type)){
+            switch ($request->type) {
+                case 'post':
+                    // $request = StatisticController::newCollection($request);
+                break;
+                case 'get':
 
-        return view('admin.statistics');
+                    $fullDate  = $request->month . '-' . $request->year;
+
+
+
+                    $response = Statistic::where('info_date', $fullDate)->get();
+                    $request = response()->json(['success' => true, 'items' => $response]);
+
+
+                break;
+                case 'update':
+                    // $request = StatisticController::update($request->collection);
+                break;
+                default:
+                    $request = response()->json(['success' => false]);
+                break;
+            }
+            return $request;
+
+        }else{
+            
+            return view('admin.statistics');
+
+        }
+
     }
 
     /**
