@@ -124,20 +124,21 @@
                             <textarea name="description" id="description" rows="5" class="form-control"></textarea>
                         </div>
                         <div class="form-row">
-                            <div class="form-group col-4">
+                            {{-- <div class="form-group col-6">
                                 <label for="credit_type">Init</label>
                                 <select name="credit_type" id="credit_type" class="form-control">
                                     <option value="from">From</option>
                                     <option value="to">To</option>
                                 </select>
-                            </div>
-                            <div class="form-group col-4">
+                            </div> --}}
+                            <div class="form-group col-6">
                                 <label for="date_info">Date</label>
                                 <input type="date" name="date_info" id="date_info" class="form-control">
                             </div>
-                            <div class="form-group col-4">
+                            <div class="form-group col-6">
                                 <label for="time_type">Range</label>
                                 <select name="time_type" id="time_type" class="form-control">
+                                    <option value="justOnce">Just Once</option>
                                     <option value="week">Week</option>
                                     <option value="2weeks">2 Weeks</option>
                                     <option value="month">Month</option>
@@ -149,10 +150,10 @@
                             <label for="amount">Amount</label>
                             <input type="number" name="amount" id="amount" class="form-control">
                         </div>
-                        <div class="form-group form-check">
+                        {{-- <div class="form-group form-check">
                             <input type="checkbox" class="form-check-input" id="extends_data">
                             <label class="form-check-label" for="extends_data">Extends?</label>
-                        </div>
+                        </div> --}}
                     </form>
 
 

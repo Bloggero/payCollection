@@ -325,9 +325,9 @@ return [
             'icon' => 'fas fa-fw fa-lock',
         ],
         [
-            'text' => 'profile',
-            'url'  => 'admin/users',
-            'icon' => 'fas fa-fw fa-user',
+            'text' => 'Statistics',
+            'url'  => 'admin/statistics',
+            'icon' => 'fas fa-chart-area',
         ],
         // [
         //     'text'       => 'information',
