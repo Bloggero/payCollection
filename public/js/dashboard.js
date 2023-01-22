@@ -9,11 +9,13 @@ function add() {
         name: userName,
         user: selectUser.value,
         description: description,
-        credit_type: credit_type.value,
+        // credit_type: credit_type.value,
+        credit_type: 'from',
         date_info: date_info.value,
         time_type: time_type.value,
         amount: amount,
-        extends: extends_data.checked,
+        // extends: extends_data.checked,
+        extends: 0,
         _token: csrf,
     };
 
