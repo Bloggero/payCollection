@@ -71,7 +71,7 @@
             </div>
 
             <div class="col-12 mb-2" id="addBar">
-                <form class="form-inline">
+                <div class="form-inline">
                     <div class="form-group mx-sm-3 mb-2">
                         <label for="links" class="sr-only">Links</label>
                         <input type="number" class="form-control" id="links" placeholder="Links">
@@ -88,8 +88,8 @@
                         <label for="other_ads" class="sr-only">Other Ads</label>
                         <input type="number" class="form-control" id="other_ads" placeholder="other_ads">
                     </div>
-                    <button type="buttom" class="btn btn-success mb-2">Save</button>
-                </form>
+                    <button type="buttom" class="btn btn-success mb-2" id="saveData">Save</button>
+                </d>
             </div>
             <div class="col-12 mb-2 mr-2 form-inline" id="optionBar" style="justify-content: flex-end">
                 <select name="year" id="year" class="col-1 form-control mx-sm-3">

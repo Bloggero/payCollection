@@ -3,8 +3,10 @@ const selectMonth = document.querySelector('#month');
 const selectYear = document.querySelector('#year');
 const getDataBtn = document.querySelector('#getData');
 const thisDate = new Date();
-const thisMonth = thisDate.getMonth();
+const thisMonth = thisDate.getMonth()+1;
 const thisYear = thisDate.getFullYear();
+
+console.log('thisMonth', thisMonth);
 
 function index(){
     const params = {
@@ -61,26 +63,23 @@ function index(){
 
 
 function add() {
-    const userName = document.querySelector("#name").value || "Empty";
-    const description = document.querySelector("#description").value;
-    const amount = document.querySelector("#amount").value;
+    const links = document.querySelector('#links').value || 0;
+    const referals = document.querySelector('#referals').value || 0;
+    const pop_ads = document.querySelector('#pop_ads').value || 0;
+    const other_ads = document.querySelector('#other_ads').value || 0;
+    const dataToSend = thisMonth < 10 ? '0'+thisMonth : thisMonth;
     const params = {
         type: "post",
-        name: userName,
-        user: selectUser.value,
-        description: description,
-        // credit_type: credit_type.value,
-        credit_type: 'from',
-        date_info: date_info.value,
-        time_type: time_type.value,
-        amount: amount,
-        // extends: extends_data.checked,
-        extends: 0,
+        links: links,
+        referals: referals,
+        pop_ads: pop_ads,
+        other_ads: other_ads,
+        info_date: dataToSend +'-'+thisYear,
         _token: csrf,
     };
-
+    console.log('params', params);
     $.ajax({
-        url: "dashboard/request",
+        url: "statistics/request",
         method: "POST",
         data: params,
         beforeSend: function () {},
@@ -96,7 +95,9 @@ function add() {
         .done(function (response) {
             console.log('response', response);
             if (response.success) {
-                $("#newUserModal").modal("hide");
+
+
+
                 msgSweetAlert("success");
 
                 /*
@@ -166,5 +167,5 @@ function infoDates(){
 }
 infoDates();
 
-
+saveData.addEventListener('click', add);
 getDataBtn.addEventListener('click', index);

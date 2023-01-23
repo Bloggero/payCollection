@@ -22,7 +22,9 @@ class StatisticController extends Controller
         if(isset($request->type)){
             switch ($request->type) {
                 case 'post':
-                    // $request = StatisticController::newCollection($request);
+                    $request = StatisticController::store($request);
+                    $request = response()->json(['success' => $request]);
+
                 break;
                 case 'get':
 
@@ -70,7 +72,14 @@ class StatisticController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $response = new Statistic();
+        $response->info_date = $request['info_date'];
+        $response->links = $request['links'];
+        $response->referals = $request['referals'];
+        $response->pop_ads = $request['pop_ads'];
+        $response->other_ads = $request['other_ads'];
+
+        return $response->save();
     }
 
     /**
