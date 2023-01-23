@@ -3,11 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 
+use Error;
+use Carbon\Carbon;
 use App\Models\Statistic;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Error;
-use Illuminate\Support\Str;
 
 
 class StatisticController extends Controller
@@ -36,7 +37,7 @@ class StatisticController extends Controller
                     $request = response()->json(['success' => true, 'items' => $response]);
 
 
-                break;
+                    break;
                 case 'update':
                     // $request = StatisticController::update($request->collection);
                 break;
@@ -47,8 +48,9 @@ class StatisticController extends Controller
             return $request;
 
         }else{
-            
-            return view('admin.statistics');
+            return view('admin.statistics', [
+                'items' => Statistic::where('info_date', Carbon::now()->format('m-Y'))->orderBy('id', 'desc')->get(),
+            ]);
 
         }
 

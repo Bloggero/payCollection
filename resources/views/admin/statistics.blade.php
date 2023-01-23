@@ -106,6 +106,7 @@
                 <table class="table table-striped table-bordered">
                     <thead>
                         <tr>
+                            <th scope="col">Day</th>
                             <th scope="col">Links</th>
                             <th scope="col">Referals</th>
                             <th scope="col">Pop Ads</th>
@@ -113,13 +114,17 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                            <td>Otto</td>
-                            <td>Otto</td>
-                        </tr>
-
+                        {{$n = 0;}}
+                        {{-- {{dd($items)}} --}}
+                        @foreach ($items as $item)
+                            <tr>
+                                <td>{{($loop->count - $loop->iteration)+1}}</td>
+                                <td>${{$item->links}}</td>
+                                <td>${{$item->referals}}</td>
+                                <td>${{$item->pop_ads}}</td>
+                                <td>${{$item->other_ads}}</td>
+                            </tr> 
+                        @endforeach
                     </tbody>
                 </table>
             </div>
