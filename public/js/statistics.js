@@ -6,6 +6,7 @@ const tbody = document.querySelector('#tbody');
 const thisDate = new Date();
 const thisMonth = thisDate.getMonth() + 1;
 const thisYear = thisDate.getFullYear();
+const alertToRecharge = document.querySelector('#alertToRecharge');
 let searchData = false;
 
 function index() {
@@ -99,15 +100,20 @@ function add() {
                  * countItems gets of the view statistics and get the number of items in the table.
                  */
                 if (!searchData) {
-
                     countItems++;
                     appendTableStructure(countItems, links.value || 0, referals.value || 0, pop_ads.value || 0, other_ads.value || 0);
+                }else{
+                    
+                    
+                    alertToRecharge.style.display = 'block';
+
+
                 }
 
-                links.value = 0.00;
-                referals.value = 0.00;
-                pop_ads.value = 0.00;
-                other_ads.value = 0.00;
+                links.value = '';
+                referals.value = '';
+                pop_ads.value = '';
+                other_ads.value = '';
 
             } else {
                 msgSweetAlert("error");

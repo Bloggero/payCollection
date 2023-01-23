@@ -15,6 +15,9 @@
             justify-content: end;
             margin-bottom: 0.5rem;
         }
+        #alertToRecharge{
+            display: none;
+        }
     </style>
     <div class="container-fluid">
         <div class="row">
@@ -117,6 +120,11 @@
                 </div>
                 <div class="form-group mb-2">
                     <button type="buttom" class="btn btn-success mb-2" id="saveData">Save</button>
+                </div>
+                <div class="col-12" id="alertToRecharge">
+                    <div class="alert alert-success" role="alert">
+                        The data was successfully added, <strong><a href="javascript:void(0)" onclick="location.reload()">click here to see it</a></strong>.
+                    </div>
                 </div>
             </div>
 
