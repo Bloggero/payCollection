@@ -2,11 +2,11 @@ const csrf = document.querySelector('[name="_token"]').value;
 const selectMonth = document.querySelector('#month');
 const selectYear = document.querySelector('#year');
 const getDataBtn = document.querySelector('#getData');
+const tbody = document.querySelector('#tbody');
 const thisDate = new Date();
 const thisMonth = thisDate.getMonth()+1;
 const thisYear = thisDate.getFullYear();
 
-console.log('thisMonth', thisMonth);
 
 function index(){
     const params = {
@@ -99,6 +99,34 @@ function add() {
 
 
                 msgSweetAlert("success");
+
+                const tr = document.createElement("tr");
+/**
+ * countItems gets of the view statistics and get the number of items in the table.
+*/
+                countItems++;
+                const tdDay = document.createElement("td");
+                tdDay.innerText = `${countItems}`;
+
+                const tdLinks = document.createElement("td");
+                tdLinks.innerText = `$${links}`;
+
+                const tdReferals = document.createElement("td");
+                tdReferals.innerText = `$${referals}`;
+
+                const tdPop_ads = document.createElement("td");
+                tdPop_ads.innerText = `$${pop_ads}`;
+
+                const tdOhter_ads = document.createElement("td");
+                tdOhter_ads.innerText = `$${other_ads}`;
+
+
+                tr.append(tdDay);
+                tr.append(tdLinks);
+                tr.append(tdReferals);
+                tr.append(tdPop_ads);
+                tr.append(tdOhter_ads);
+                tbody.prepend(tr);
 
                 /*
 

@@ -113,9 +113,7 @@
                             <th scope="col">Others</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        {{$n = 0;}}
-                        {{-- {{dd($items)}} --}}
+                    <tbody id="tbody">
                         @foreach ($items as $item)
                             <tr>
                                 <td>{{($loop->count - $loop->iteration)+1}}</td>
@@ -139,5 +137,8 @@
 @stop
 
 @section('js')
+    <script>
+        let countItems = {{$items->count()}}; /*this is for count numbers of the items and next get the last number of the table*/
+    </script>
     <script src="{{ asset('js/statistics.js') }}"></script>
 @stop
