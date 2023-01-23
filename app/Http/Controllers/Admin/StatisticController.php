@@ -3,11 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 
+use Error;
+use Carbon\Carbon;
 use App\Models\Statistic;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Error;
-use Illuminate\Support\Str;
 
 
 class StatisticController extends Controller
@@ -22,7 +23,9 @@ class StatisticController extends Controller
         if(isset($request->type)){
             switch ($request->type) {
                 case 'post':
-                    // $request = StatisticController::newCollection($request);
+                    $request = StatisticController::store($request);
+                    $request = response()->json(['success' => $request]);
+
                 break;
                 case 'get':
 
@@ -34,7 +37,7 @@ class StatisticController extends Controller
                     $request = response()->json(['success' => true, 'items' => $response]);
 
 
-                break;
+                    break;
                 case 'update':
                     // $request = StatisticController::update($request->collection);
                 break;
@@ -45,8 +48,9 @@ class StatisticController extends Controller
             return $request;
 
         }else{
-            
-            return view('admin.statistics');
+            return view('admin.statistics', [
+                'items' => Statistic::where('info_date', Carbon::now()->format('m-Y'))->orderBy('id', 'desc')->get(),
+            ]);
 
         }
 
@@ -70,7 +74,14 @@ class StatisticController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $response = new Statistic();
+        $response->info_date = $request['info_date'];
+        $response->links = $request['links'];
+        $response->referals = $request['referals'];
+        $response->pop_ads = $request['pop_ads'];
+        $response->other_ads = $request['other_ads'];
+
+        return $response->save();
     }
 
     /**

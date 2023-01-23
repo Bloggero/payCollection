@@ -2,11 +2,14 @@ const csrf = document.querySelector('[name="_token"]').value;
 const selectMonth = document.querySelector('#month');
 const selectYear = document.querySelector('#year');
 const getDataBtn = document.querySelector('#getData');
+const tbody = document.querySelector('#tbody');
 const thisDate = new Date();
-const thisMonth = thisDate.getMonth();
+const thisMonth = thisDate.getMonth() + 1;
 const thisYear = thisDate.getFullYear();
+const alertToRecharge = document.querySelector('#alertToRecharge');
+let searchData = false;
 
-function index(){
+function index() {
     const params = {
         type: "get",
         month: selectMonth.value || thisMonth,
@@ -15,96 +18,102 @@ function index(){
     };
     console.log('params', params);
     $.ajax({
-        url: "statistics/request",
-        method: "POST",
-        data: params,
-        beforeSend: function () {},
-        statusCode: {
-            404: () => {
-                msgSweetAlert("404");
+            url: "statistics/request",
+            method: "POST",
+            data: params,
+            beforeSend: function () {},
+            statusCode: {
+                404: () => {
+                    msgSweetAlert("404");
+                },
+                500: () => {
+                    msgSweetAlert("500");
+                },
             },
-            500: () => {
-                msgSweetAlert("500");
-            },
-        },
-    })
+        })
         .done(function (response) {
+            searchData = true;
             console.log('response', response);
             if (response.success) {
+                tbody.innerHTML = ``;
                 const data = response.items;
-
+                console.log('data', data.length);
                 if (data.length == 0) {
-                    console.log('No hay data');
+                    const tr = document.createElement("tr");
 
-                    /** we deleted all data of table and show msg with text there is no data */
-                }else {
-                    data.forEach(element => {
-                        console.log(element);
+                    const td = document.createElement("td");
+
+                    td.innerText = `No data for this search`;
+
+                    tr.append(td);
+                    tbody.append(tr);
+
+                } else {
+                    data.reverse();
+                    data.forEach((element, index) => {
+                        appendTableStructure(index + 1, element.links || 0, element.referals || 0, element.pop_ads || 0, element.other_ads || 0);
                     });
                 }
-
-                /*
-
-                vamos a estrar los datos del nuevo collection y los vamos a agregar o ya veremos algo que sea rapido 
-                
-                */
-
-
             } else {
                 msgSweetAlert("error");
             }
         })
         .then(() => {});
-
 }
 
-
-
 function add() {
-    const userName = document.querySelector("#name").value || "Empty";
-    const description = document.querySelector("#description").value;
-    const amount = document.querySelector("#amount").value;
+    const links = document.querySelector('#links');
+    const referals = document.querySelector('#referals');
+    const pop_ads = document.querySelector('#pop_ads');
+    const other_ads = document.querySelector('#other_ads');
+    const dataToSend = thisMonth < 10 ? '0' + thisMonth : thisMonth;
     const params = {
         type: "post",
-        name: userName,
-        user: selectUser.value,
-        description: description,
-        // credit_type: credit_type.value,
-        credit_type: 'from',
-        date_info: date_info.value,
-        time_type: time_type.value,
-        amount: amount,
-        // extends: extends_data.checked,
-        extends: 0,
+        links: links.value || 0,
+        referals: referals.value || 0,
+        pop_ads: pop_ads.value || 0,
+        other_ads: other_ads.value || 0,
+        info_date: dataToSend + '-' + thisYear,
         _token: csrf,
     };
-
+    console.log('params', params);
     $.ajax({
-        url: "dashboard/request",
-        method: "POST",
-        data: params,
-        beforeSend: function () {},
-        statusCode: {
-            404: () => {
-                msgSweetAlert("404");
+            url: "statistics/request",
+            method: "POST",
+            data: params,
+            beforeSend: function () {},
+            statusCode: {
+                404: () => {
+                    msgSweetAlert("404");
+                },
+                500: () => {
+                    msgSweetAlert("500");
+                },
             },
-            500: () => {
-                msgSweetAlert("500");
-            },
-        },
-    })
+        })
         .done(function (response) {
             console.log('response', response);
             if (response.success) {
-                $("#newUserModal").modal("hide");
+
                 msgSweetAlert("success");
+                /**
+                 * countItems gets of the view statistics and get the number of items in the table.
+                 */
+                if (!searchData) {
+                    countItems++;
+                    appendTableStructure(countItems, links.value || 0, referals.value || 0, pop_ads.value || 0, other_ads.value || 0);
+                }else{
+                    
+                    
+                    alertToRecharge.style.display = 'block';
 
-                /*
 
-                vamos a estrar los datos del nuevo collection y los vamos a agregar o ya veremos algo que sea rapido 
-                
-                */
+                }
 
+                links.value = '';
+                referals.value = '';
+                pop_ads.value = '';
+                other_ads.value = '';
 
             } else {
                 msgSweetAlert("error");
@@ -112,6 +121,7 @@ function add() {
         })
         .then(() => {});
 }
+
 function msgSweetAlert(value) {
     switch (value) {
         case "500":
@@ -153,12 +163,44 @@ function msgSweetAlert(value) {
     }
 }
 
+function appendTableStructure(countItems, links, referals, pop_ads, other_ads) {
 
-function infoDates(){
-    const month = ['january', 'february', 'march', 'april', 'may', 'june','july', 'august', 'september', 'october', 'november', 'december'];
-    month.forEach(element =>{
+    const tr = document.createElement("tr");
+
+    const tdDay = document.createElement("td");
+    tdDay.innerText = `${countItems}`;
+
+    const tdLinks = document.createElement("td");
+    tdLinks.innerText = `$${links}`;
+
+    const tdReferals = document.createElement("td");
+    tdReferals.innerText = `$${referals}`;
+
+    const tdPop_ads = document.createElement("td");
+    tdPop_ads.innerText = `$${pop_ads}`;
+
+    const tdOhter_ads = document.createElement("td");
+    tdOhter_ads.innerText = `$${other_ads}`;
+
+
+    tr.append(tdDay);
+    tr.append(tdLinks);
+    tr.append(tdReferals);
+    tr.append(tdPop_ads);
+    tr.append(tdOhter_ads);
+    tbody.prepend(tr);
+
+
+}
+
+function infoDates() {
+    /**
+     * This is only for fill selects for dates
+     */
+    const month = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december'];
+    month.forEach(element => {
         const option = document.createElement('option');
-        let indexItem = month.indexOf(element)+1;
+        let indexItem = month.indexOf(element) + 1;
         option.value = indexItem < 10 ? `0${indexItem}` : indexItem;
         option.innerText = element[0].toUpperCase() + element.substring(1);
         selectMonth.appendChild(option);
@@ -166,5 +208,5 @@ function infoDates(){
 }
 infoDates();
 
-
+saveData.addEventListener('click', add);
 getDataBtn.addEventListener('click', index);
