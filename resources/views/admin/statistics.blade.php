@@ -25,10 +25,13 @@
             <div class="col-12 mb-2" id="optionBar">
                 <div class="col-4 col-md-3 col-lg-2 col-xl-2 col-xxl-1">
                     <select name="year" id="year" class="form-control">
-                        <option value="2016">2016</option>
-                        <option value="2017">2017</option>
-                        <option value="2018">2018</option>
-                        <option value="2019">2019</option>
+                        @for ($firstYear = $firstYear; $firstYear <= $lastYear; $firstYear++)
+                            @if ($firstYear == $lastYear)
+                                <option value="{{ $firstYear }}" selected>{{ $firstYear }}</option>
+                            @else
+                                <option value="{{ $firstYear }}">{{ $firstYear }}</option>
+                            @endif
+                        @endfor
                     </select>
                 </div>
                 <div class="col-4 col-md-3 col-lg-2">
@@ -43,21 +46,9 @@
             <div class="col-12 mb-2" id="infoBar">
                 <div class="row">
                     <div class="col-6 col-lg-4">
-                        <div class="small-box bg-success">
-                            <div class="inner">
-                                <h3><sup style="font-size: 20px">$</sup><span id="revenue">{{ $revenue }}</span></h3>
-                                <p>Last Month: <span id="lastRevenue">${{ $lastRevenue }}</span></p>
-                            </div>
-                            <div class="icon">
-                                <i class="fas fa-arrow-circle-up"></i>
-                            </div>
-                            <a href="#" class="small-box-footer">Revenue</a>
-                        </div>
-                    </div>
-                    <div class="col-6 col-lg-4">
                         <div class="small-box bg-danger">
                             <div class="inner">
-                                <h3><sup style="font-size: 20px">$</sup><span id="expenses">{{ $expenses }}</span></h3>
+                                <h3><sup style="font-size: 20px">$</sup><span id="expenses" value="{{ $expenses }}">{{ $expenses }}</span></h3>
                                 <p>Last Month: <span id="lastExpenses">${{ $lastExpenses }}</span></p>
                             </div>
                             <div class="icon">
@@ -66,12 +57,25 @@
                             <a href="#" class="small-box-footer">Expenses</a>
                         </div>
                     </div>
+                    <div class="col-6 col-lg-4">
+                        <div class="small-box bg-success">
+                            <div class="inner">
+                                <h3><sup style="font-size: 20px">$</sup><span id="revenue" value="{{ $revenue }}">{{ $revenue }}</span></h3>
+                                <p>Last Month: <span id="lastRevenue">${{ $lastRevenue }}</span></p>
+                            </div>
+                            <div class="icon">
+                                <i class="fas fa-arrow-circle-up"></i>
+                            </div>
+                            <a href="#" class="small-box-footer">Revenue</a>
+                        </div>
+                    </div>
+
 
 
                     <div class="col-12 col-lg-4">
                         <div class="small-box bg-info">
                             <div class="inner">
-                                <h3><sup style="font-size: 20px">$</sup><span id="earnings">{{ $revenue-$expenses }}</span></h3>
+                                <h3><sup style="font-size: 20px">$</sup><span id="earnings" value="{{ $revenue-$expenses }}">{{ $revenue-$expenses }}</span></h3>
                                 <p>Last Month: <span id="lastEarnings">${{ $lastRevenue-$lastExpenses }}</span></p>
                             </div>
                             <div class="icon">
@@ -150,7 +154,6 @@
     <script>
 
         let countItems = {{ $items->count() }}; /*this is for count numbers of the items and next get the last number of the table*/
-
     </script>
     <script src="{{ asset('js/statistics.js') }}"></script>
 @stop

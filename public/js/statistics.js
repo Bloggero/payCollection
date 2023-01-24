@@ -8,6 +8,16 @@ const revenue = document.querySelector('#revenue');
 const expenses = document.querySelector('#expenses');
 const lastRevenue = document.querySelector('#lastRevenue');
 const lastExpenses = document.querySelector('#lastExpenses');
+const earnings = document.querySelector('#earnings');
+
+console.log('revenue', revenue);
+
+console.log('revenue', revenue.getAttribute('value'));
+
+
+console.log('revenue.value ', revenue.value);
+console.log('expenses.value ', expenses.value);
+console.log('earnings.value ', earnings.value);
 
 const tbody = document.querySelector('#tbody');
 const thisDate = new Date();
@@ -15,7 +25,6 @@ const thisMonth = thisDate.getMonth() + 1;
 const thisYear = thisDate.getFullYear();
 const alertToRecharge = document.querySelector('#alertToRecharge');
 let searchData = false;
-
 function index() {
 
     const params = {
@@ -123,10 +132,45 @@ function add() {
                 msgSweetAlert("success");
                 /**
                  * countItems gets of the view statistics and get the number of items in the table.
+                 * and if searchData is false (why the btn getData dont have a click)
                  */
                 if (!searchData) {
                     countItems++;
                     appendTableStructure(countItems, links.value || 0, referals.value || 0, pop_ads.value || 0, other_ads.value || 0);
+
+
+                    console.log('revenue.value ', revenue.getAttribute('value'));
+                    console.log('expenses.value ', expenses.getAttribute('value'));
+                    console.log('earnings.value ', earnings.getAttribute('value'));
+
+                    console.log('pop_ads.value', pop_ads.value);
+                    console.log('other_ads.value', other_ads.value);
+
+                    console.log('links.value', links.value);
+                    console.log('referals.value', referals.value);
+
+
+                    //originalRevenuel as revenue plus the new revenue. All this is for show at real time the new changes
+                    const newRevenue    = parseInt(revenue.getAttribute('value'))+parseInt(pop_ads.value)+parseInt(other_ads.value);
+                    const newExpenses   = parseInt(expenses.getAttribute('value'))+parseInt(links.value)+parseInt(referals.value);
+                    const newEarnings   = parseInt(newRevenue-newExpenses);
+
+                    console.log('newRevenue', newRevenue);
+                    console.log('newExpenses', newExpenses);
+                    console.log('newEarnings', newEarnings);
+
+                    console.log('revenue.value ', revenue.value);
+                    console.log('expenses.value ', expenses.value);
+                    console.log('earnings.value ', earnings.value);
+
+                    revenue.value       = newRevenue; 
+                    expenses.value      = newExpenses;
+                    earnings.value      = newEarnings;
+
+                    revenue.innerHTML   = newRevenue;
+                    expenses.innerHTML  = newRevenue;
+                    earnings.innerHTML  = newEarnings;
+
                 }else{
                     alertToRecharge.style.display = 'block';
                 }
@@ -215,8 +259,14 @@ function appendTableStructure(countItems, links, referals, pop_ads, other_ads) {
 }
 
 function changeDataCard(valRevenue, valExpenses, valLastRevenue, valLastExpenses){
-    console.log('valLastRevenue', valLastRevenue);
-    console.log('valLastExpenses', valLastExpenses);
+
+    revenue.value       = valRevenue.toFixed(2);
+    expenses.value      = valExpenses.toFixed(2);
+    lastRevenue.value   = valLastRevenue.toFixed(2);
+    lastExpenses.value  = valLastExpenses.toFixed(2);
+    earnings.value      = (valRevenue-valExpenses).toFixed(2);
+    lastEarnings.value  = (valLastRevenue-valLastExpenses).toFixed(2);
+
     revenue.innerText       = valRevenue.toFixed(2);
     expenses.innerText      = valExpenses.toFixed(2);
     lastRevenue.innerText   = valLastRevenue.toFixed(2);
@@ -236,8 +286,15 @@ function infoDates() {
         let indexItem = month.indexOf(element) + 1;
         option.value = indexItem < 10 ? `0${indexItem}` : indexItem;
         option.innerText = element[0].toUpperCase() + element.substring(1);
+        if(indexItem == thisMonth){
+            option.setAttribute('selected', 'true');
+        }
+
         selectMonth.appendChild(option);
     });
+
+
+
 }
 infoDates();
 

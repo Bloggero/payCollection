@@ -55,9 +55,23 @@ class StatisticController extends Controller
             return $request;
 
         }else{
+            /**
+             * $firstYear gets the first date from the table, if this table doesn't have any dates the $firstDate will the actual year
+             */
+
+            $firstYear  = Statistic::select('info_date')->first();
+            if($firstYear == null){
+                $firstYear = Carbon::now()->format('Y');
+            }else{
+                $firstYear = intval(substr(strval($firstYear->info_date), 3, 4));
+            }
+
+            $lastYear   = Carbon::now()->format('Y');
+
             $thisMontItems = Statistic::where('info_date', Carbon::now()->format('m-Y'))->orderBy('id', 'desc')->get();
             $revenue = $thisMontItems->sum('pop_ads') + $thisMontItems->sum('other_ads');
             $expenses    = $thisMontItems->sum('links') + $thisMontItems->sum('referals');
+
 
             $lastItems = StatisticController::getLastItems(Carbon::now()->format('m-Y'));
             $lastRevenue   = $lastItems->sum('pop_ads') + $lastItems->sum('other_ads');
@@ -65,6 +79,8 @@ class StatisticController extends Controller
 
             return view('admin.statistics', [
                 'items' => $thisMontItems,
+                'firstYear' => $firstYear,
+                'lastYear' => $lastYear,
                 'revenue' => $revenue,
                 'expenses' => $expenses,
                 'lastRevenue' => $lastRevenue,
