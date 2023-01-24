@@ -29,12 +29,20 @@ class StatisticController extends Controller
                 break;
                 case 'get':
 
-                    $fullDate  = $request->month . '-' . $request->year;
+                    $fullDate   = $request->month . '-' . $request->year;
+                    /**
+                     * To get the last month date, we need to substract the date 1 day
+                     */
+                    $lastItems  = date('01-'.$fullDate);
+                    $lastItems  = date('m-Y', strtotime($lastItems.'- 1 days'));
+
+
 
 
 
                     $response = Statistic::where('info_date', $fullDate)->get();
-                    $request = response()->json(['success' => true, 'items' => $response]);
+                    // $last = Statistic::where('info_date', $fullDate)->get();
+                    $request = response()->json(['success' => true, 'items' => $response, 'lastItems' => $lastItems]);
 
 
                     break;
@@ -114,17 +122,6 @@ class StatisticController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Statistic $statistic)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Statistic  $statistic
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Statistic $statistic)
     {
         //
     }

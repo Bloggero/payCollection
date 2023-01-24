@@ -16,7 +16,6 @@ function index() {
         year: selectYear.value || thisYear,
         _token: csrf,
     };
-    console.log('params', params);
     $.ajax({
             url: "statistics/request",
             method: "POST",
@@ -32,15 +31,17 @@ function index() {
             },
         })
         .done(function (response) {
-            searchData = true;
+
             console.log('response', response);
+
+            searchData = true;
             if (response.success) {
                 tbody.innerHTML = ``;
                 const data = response.items;
-                console.log('data', data.length);
-                if (data.length == 0) {
-                    const tr = document.createElement("tr");
 
+                if (data.length == 0) {
+
+                    const tr = document.createElement("tr");
                     const td = document.createElement("td");
 
                     td.innerText = `No data for this search`;
@@ -49,10 +50,12 @@ function index() {
                     tbody.append(tr);
 
                 } else {
+
                     data.reverse();
                     data.forEach((element, index) => {
                         appendTableStructure(index + 1, element.links || 0, element.referals || 0, element.pop_ads || 0, element.other_ads || 0);
                     });
+                    
                 }
             } else {
                 msgSweetAlert("error");
@@ -103,11 +106,7 @@ function add() {
                     countItems++;
                     appendTableStructure(countItems, links.value || 0, referals.value || 0, pop_ads.value || 0, other_ads.value || 0);
                 }else{
-                    
-                    
                     alertToRecharge.style.display = 'block';
-
-
                 }
 
                 links.value = '';
