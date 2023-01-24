@@ -42,61 +42,45 @@
 
             <div class="col-12 mb-2" id="infoBar">
                 <div class="row">
-                    <div class="col-6 col-lg-3">
-
-                        <div class="small-box bg-info">
-                            <div class="inner">
-                                <h3>150</h3>
-                                <p>New Orders</p>
-                            </div>
-                            <div class="icon">
-                                <i class="fas fa-arrow-circle-right"></i>
-                            </div>
-                            <a href="#" class="small-box-footer">More info <i
-                                    class="fas fa-arrow-circle-right"></i></a>
-                        </div>
-                    </div>
-                    <div class="col-6 col-lg-3">
+                    <div class="col-6 col-lg-4">
                         <div class="small-box bg-success">
                             <div class="inner">
-                                <h3>53<sup style="font-size: 20px">%</sup></h3>
-                                <p>Bounce Rate</p>
+                                <h3><sup style="font-size: 20px">$</sup><span id="revenue">{{ $revenue }}</span></h3>
+                                <p>Last Month: <span id="lastRevenue">${{ $lastRevenue }}</span></p>
                             </div>
                             <div class="icon">
-                                <i class="ion ion-stats-bars"></i>
+                                <i class="fas fa-arrow-circle-up"></i>
                             </div>
-                            <a href="#" class="small-box-footer">More info <i
-                                    class="fas fa-arrow-circle-right"></i></a>
+                            <a href="#" class="small-box-footer">Revenue</a>
                         </div>
                     </div>
-
-                    <div class="col-6 col-lg-3">
-                        <div class="small-box bg-warning">
-                            <div class="inner">
-                                <h3>44</h3>
-                                <p>User Registrations</p>
-                            </div>
-                            <div class="icon">
-                                <i class="ion ion-person-add"></i>
-                            </div>
-                            <a href="#" class="small-box-footer">More info <i
-                                    class="fas fa-arrow-circle-right"></i></a>
-                        </div>
-                    </div>
-
-                    <div class="col-6 col-lg-3">
+                    <div class="col-6 col-lg-4">
                         <div class="small-box bg-danger">
                             <div class="inner">
-                                <h3>65</h3>
-                                <p>Unique Visitors</p>
+                                <h3><sup style="font-size: 20px">$</sup><span id="expenses">{{ $expenses }}</span></h3>
+                                <p>Last Month: <span id="lastExpenses">${{ $lastExpenses }}</span></p>
                             </div>
                             <div class="icon">
-                                <i class="ion ion-pie-graph"></i>
+                                <i class="fas fa-arrow-circle-down"></i>
                             </div>
-                            <a href="#" class="small-box-footer">More info <i
-                                    class="fas fa-arrow-circle-right"></i></a>
+                            <a href="#" class="small-box-footer">Expenses</a>
                         </div>
                     </div>
+
+
+                    <div class="col-12 col-lg-4">
+                        <div class="small-box bg-info">
+                            <div class="inner">
+                                <h3><sup style="font-size: 20px">$</sup><span id="earnings">{{ $revenue-$expenses }}</span></h3>
+                                <p>Last Month: <span id="lastEarnings">${{ $lastRevenue-$lastExpenses }}</span></p>
+                            </div>
+                            <div class="icon">
+                                <i class="fa fa-info-circle" aria-hidden="true"></i>
+                            </div>
+                            <a href="#" class="small-box-footer">Earnings</a>
+                        </div>
+                    </div>
+
                 </div>
             </div>
 
@@ -164,8 +148,9 @@
 
 @section('js')
     <script>
-        let countItems =
-            {{ $items->count() }}; /*this is for count numbers of the items and next get the last number of the table*/
+
+        let countItems = {{ $items->count() }}; /*this is for count numbers of the items and next get the last number of the table*/
+
     </script>
     <script src="{{ asset('js/statistics.js') }}"></script>
 @stop

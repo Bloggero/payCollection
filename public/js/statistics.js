@@ -9,7 +9,9 @@ const thisYear = thisDate.getFullYear();
 const alertToRecharge = document.querySelector('#alertToRecharge');
 let searchData = false;
 
+
 function index() {
+
     const params = {
         type: "get",
         month: selectMonth.value || thisMonth,

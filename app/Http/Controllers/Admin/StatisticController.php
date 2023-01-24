@@ -30,13 +30,9 @@ class StatisticController extends Controller
                 case 'get':
 
                     $fullDate   = $request->month . '-' . $request->year;
-                    /**
-                     * To get the last month date, we need to substract the date 1 day
-                     */
-                    $lastItems  = date('01-'.$fullDate);
-                    $lastItems  = date('m-Y', strtotime($lastItems.'- 1 days'));
 
 
+                    $lastItems = StatisticController::getLastDate($fullDate);
 
 
 
@@ -56,11 +52,35 @@ class StatisticController extends Controller
             return $request;
 
         }else{
+            $thisMontItems = Statistic::where('info_date', Carbon::now()->format('m-Y'))->orderBy('id', 'desc')->get();
+            $revenue = $thisMontItems->sum('pop_ads') + $thisMontItems->sum('other_ads');
+            $expenses    = $thisMontItems->sum('links') + $thisMontItems->sum('referals');
+
+            $lastItems = Statistic::where('info_date', StatisticController::getLastDate(Carbon::now()->format('m-Y')))->orderBy('id', 'desc')->get();
+            $lastRevenue   = $lastItems->sum('pop_ads') + $lastItems->sum('other_ads');
+            $lastExpenses    = $lastItems->sum('links') + $lastItems->sum('referals');
+
             return view('admin.statistics', [
-                'items' => Statistic::where('info_date', Carbon::now()->format('m-Y'))->orderBy('id', 'desc')->get(),
+                'items' => $thisMontItems,
+                'revenue' => $revenue,
+                'expenses' => $expenses,
+                'lastRevenue' => $lastRevenue,
+                'lastExpenses' => $lastExpenses,
             ]);
 
         }
+
+    }
+
+
+    static public function getLastDate($value){
+
+                    /**
+                     * To get the last month date, we need to substract the date 1 day
+                     */
+                    $lastItems  = date('01-'.$value);
+                    $lastItems  = date('m-Y', strtotime($lastItems.'- 1 days'));
+                    return $lastItems;
 
     }
 
