@@ -28,18 +28,21 @@ class StatisticController extends Controller
 
                 break;
                 case 'get':
-
+                    /**
+                     * Get $fullDate for example 01-23
+                     * next $response get data for $fullDate variable
+                     * next $lastItems received data from getLastItems and now this create two variables for $lastRevenue and $lastExpenses
+                     * next all this is send for response
+                     */
                     $fullDate   = $request->month . '-' . $request->year;
 
-
-                    $lastItems = StatisticController::getLastDate($fullDate);
-
-
-
                     $response = Statistic::where('info_date', $fullDate)->get();
-                    // $last = Statistic::where('info_date', $fullDate)->get();
-                    $request = response()->json(['success' => true, 'items' => $response, 'lastItems' => $lastItems]);
 
+                    $lastItems = StatisticController::getLastItems($fullDate);
+                    $lastRevenue   = $lastItems->sum('pop_ads') + $lastItems->sum('other_ads');
+                    $lastExpenses    = $lastItems->sum('links') + $lastItems->sum('referals');
+
+                    $request = response()->json(['success' => true, 'items' => $response, 'lastItems' => ['lastRevenue' => $lastRevenue, 'lastExpenses' => $lastExpenses]]);
 
                     break;
                 case 'update':
@@ -56,7 +59,7 @@ class StatisticController extends Controller
             $revenue = $thisMontItems->sum('pop_ads') + $thisMontItems->sum('other_ads');
             $expenses    = $thisMontItems->sum('links') + $thisMontItems->sum('referals');
 
-            $lastItems = Statistic::where('info_date', StatisticController::getLastDate(Carbon::now()->format('m-Y')))->orderBy('id', 'desc')->get();
+            $lastItems = StatisticController::getLastItems(Carbon::now()->format('m-Y'));
             $lastRevenue   = $lastItems->sum('pop_ads') + $lastItems->sum('other_ads');
             $lastExpenses    = $lastItems->sum('links') + $lastItems->sum('referals');
 
@@ -73,14 +76,17 @@ class StatisticController extends Controller
     }
 
 
-    static public function getLastDate($value){
+    static public function getLastItems($value){
 
                     /**
                      * To get the last month date, we need to substract the date 1 day
+                     * and next execute a query with the $lastDate variable
                      */
-                    $lastItems  = date('01-'.$value);
-                    $lastItems  = date('m-Y', strtotime($lastItems.'- 1 days'));
-                    return $lastItems;
+                    $lastDate  = date('01-'.$value);
+                    $lastDate  = date('m-Y', strtotime($lastDate.'- 1 days'));
+                    
+                    $response = Statistic::where('info_date', $lastDate)->get();
+                    return $response;
 
     }
 

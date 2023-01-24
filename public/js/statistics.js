@@ -2,13 +2,19 @@ const csrf = document.querySelector('[name="_token"]').value;
 const selectMonth = document.querySelector('#month');
 const selectYear = document.querySelector('#year');
 const getDataBtn = document.querySelector('#getData');
+const spanSpin = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...`;
+
+const revenue = document.querySelector('#revenue');
+const expenses = document.querySelector('#expenses');
+const lastRevenue = document.querySelector('#lastRevenue');
+const lastExpenses = document.querySelector('#lastExpenses');
+
 const tbody = document.querySelector('#tbody');
 const thisDate = new Date();
 const thisMonth = thisDate.getMonth() + 1;
 const thisYear = thisDate.getFullYear();
 const alertToRecharge = document.querySelector('#alertToRecharge');
 let searchData = false;
-
 
 function index() {
 
@@ -22,7 +28,16 @@ function index() {
             url: "statistics/request",
             method: "POST",
             data: params,
-            beforeSend: function () {},
+            beforeSend: function () {
+                getDataBtn.innerHTML    = spanSpin;
+                revenue.innerHTML       = spanSpin;
+                expenses.innerHTML      = spanSpin;
+                lastRevenue.innerHTML   = spanSpin;
+                lastExpenses.innerHTML  = spanSpin;
+                earnings.innerHTML      = spanSpin;
+                lastEarnings.innerHTML  = spanSpin;
+                tbody.innerHTML         = spanSpin;
+            },
             statusCode: {
                 404: () => {
                     msgSweetAlert("404");
@@ -34,8 +49,6 @@ function index() {
         })
         .done(function (response) {
 
-            console.log('response', response);
-
             searchData = true;
             if (response.success) {
                 tbody.innerHTML = ``;
@@ -43,11 +56,11 @@ function index() {
 
                 if (data.length == 0) {
 
+                    changeDataCard(0, 0, 0, 0);
+
                     const tr = document.createElement("tr");
                     const td = document.createElement("td");
-
                     td.innerText = `No data for this search`;
-
                     tr.append(td);
                     tbody.append(tr);
 
@@ -57,13 +70,20 @@ function index() {
                     data.forEach((element, index) => {
                         appendTableStructure(index + 1, element.links || 0, element.referals || 0, element.pop_ads || 0, element.other_ads || 0);
                     });
+
+                    const thisRevenue = data.reduce((acc, item) => acc + item.pop_ads, 0) + data.reduce((acc, item) => acc + item.other_ads, 0);
+                    const thisExpenses = data.reduce((acc, item) => acc + item.links, 0) + data.reduce((acc, item) => acc + item.referals, 0);
+                    console.log('thisRevenue', thisRevenue);
+                    changeDataCard(thisRevenue || 0, thisExpenses || 0, response.lastItems.lastRevenue || 0, response.lastItems.lastExpenses || 0);
                     
                 }
             } else {
                 msgSweetAlert("error");
             }
         })
-        .then(() => {});
+        .then(() => {
+            getDataBtn.innerHTML = `Get Data`;
+        });
 }
 
 function add() {
@@ -191,6 +211,18 @@ function appendTableStructure(countItems, links, referals, pop_ads, other_ads) {
     tr.append(tdOhter_ads);
     tbody.prepend(tr);
 
+
+}
+
+function changeDataCard(valRevenue, valExpenses, valLastRevenue, valLastExpenses){
+    console.log('valLastRevenue', valLastRevenue);
+    console.log('valLastExpenses', valLastExpenses);
+    revenue.innerText       = valRevenue.toFixed(2);
+    expenses.innerText      = valExpenses.toFixed(2);
+    lastRevenue.innerText   = valLastRevenue.toFixed(2);
+    lastExpenses.innerText  = valLastExpenses.toFixed(2);
+    earnings.innerHTML      = (valRevenue-valExpenses).toFixed(2);
+    lastEarnings.innerHTML  = (valLastRevenue-valLastExpenses).toFixed(2);
 
 }
 
