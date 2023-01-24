@@ -87,19 +87,19 @@
             <div class="col-12 mb-2 mr-2 form-inline" id="addBar">
 
                 <div class="form-group mx-sm-4 mb-2">
-                    <label for="links" class="sr-only">Links</label>
+                    <label for="links" class="mr-1">Links</label>
                     <input type="number" class="form-control" id="links" placeholder="0.00">
                 </div>
                 <div class="form-group mx-sm-4 mb-2">
-                    <label for="referals" class="sr-only">referals</label>
+                    <label for="referals" class="mr-1">Referals</label>
                     <input type="number" class="form-control" id="referals" placeholder="0.00">
                 </div>
                 <div class="form-group mx-sm-4 mb-2">
-                    <label for="pop_ads" class="sr-only">Pop Ads</label>
+                    <label for="pop_ads" class="mr-1">Pop Ads</label>
                     <input type="number" class="form-control" id="pop_ads" placeholder="0.00">
                 </div>
                 <div class="form-group mx-sm-4 mb-2">
-                    <label for="other_ads" class="sr-only">Other Ads</label>
+                    <label for="other_ads" class="mr-1">Other Ads</label>
                     <input type="number" class="form-control" id="other_ads" placeholder="0.00">
                 </div>
                 <div class="form-group mb-2">
