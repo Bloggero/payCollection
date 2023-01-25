@@ -106,6 +106,10 @@
                     <label for="other_ads" class="mr-1">Other Ads</label>
                     <input type="number" class="form-control" id="other_ads" placeholder="0.00">
                 </div>
+                <div class="form-group mx-sm-4 mb-2">
+                    <input class="form-check-input" type="checkbox" value="" id="clearInputs">
+                    <label class="form-check-label" for="clearInputs">Clear Inputs</label>
+                </div>
                 <div class="form-group mb-2">
                     <button type="buttom" class="btn btn-success mb-2" id="saveData">Save</button>
                 </div>

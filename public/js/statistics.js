@@ -9,6 +9,8 @@ const expenses = document.querySelector('#expenses');
 const lastRevenue = document.querySelector('#lastRevenue');
 const lastExpenses = document.querySelector('#lastExpenses');
 const earnings = document.querySelector('#earnings');
+const clearInputs = document.querySelector('#clearInputs');
+
 
 console.log('revenue', revenue);
 
@@ -175,10 +177,12 @@ function add() {
                     alertToRecharge.style.display = 'block';
                 }
 
-                links.value = '';
-                referals.value = '';
-                pop_ads.value = '';
-                other_ads.value = '';
+                if(clearInputs.checked == true){
+                    links.value = '';
+                    referals.value = '';
+                    pop_ads.value = '';
+                    other_ads.value = '';
+                }
 
             } else {
                 msgSweetAlert("error");
@@ -297,6 +301,6 @@ function infoDates() {
 
 }
 infoDates();
-
+clearInputs.checked = true;
 saveData.addEventListener('click', add);
 getDataBtn.addEventListener('click', index);

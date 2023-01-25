@@ -15,5 +15,5 @@ Route::post('/dashboard/request', [CollectionController::class, 'index']);
 
 
 Route::get('/statistics', [StatisticController::class, 'index']);
-Route::post('/statistics/request', [StatisticController::class, 'index']);
+Route::post('/statistics/request', [StatisticController::class, 'index'])->name('statisticsRequest');
 
