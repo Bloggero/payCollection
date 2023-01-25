@@ -25,7 +25,10 @@ class StatisticController extends Controller
                 case 'post':
                     $request = StatisticController::store($request);
                     $request = response()->json(['success' => $request]);
-
+                break;
+                case 'put':
+                    $request = StatisticController::update($request);
+                    $request = response()->json(['success' => $request]);
                 break;
                 case 'get':
                     /**
@@ -45,9 +48,6 @@ class StatisticController extends Controller
                     $request = response()->json(['success' => true, 'items' => $response, 'lastItems' => ['lastRevenue' => $lastRevenue, 'lastExpenses' => $lastExpenses]]);
 
                     break;
-                case 'update':
-                    // $request = StatisticController::update($request->collection);
-                break;
                 default:
                     $request = response()->json(['success' => false]);
                 break;
@@ -107,16 +107,6 @@ class StatisticController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -135,36 +125,20 @@ class StatisticController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Statistic  $statistic
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Statistic $statistic)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Statistic  $statistic
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Statistic $statistic)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Statistic  $statistic
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Statistic $statistic)
+    public function update(Request $request)
     {
-        //
+
+        $response = Statistic::find($request->id);
+        $response->links = $request->links;
+        $response->referals = $request->referals;
+        $response->pop_ads = $request->pop_ads;
+        $response->other_ads = $request->other_ads;
+
+        return $response->save();
+
     }
 }

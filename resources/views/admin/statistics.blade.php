@@ -15,7 +15,8 @@
             justify-content: end;
             margin-bottom: 0.5rem;
         }
-        #alertToRecharge{
+
+        #alertToRecharge {
             display: none;
         }
     </style>
@@ -48,7 +49,8 @@
                     <div class="col-6 col-lg-4">
                         <div class="small-box bg-danger">
                             <div class="inner">
-                                <h3><sup style="font-size: 20px">$</sup><span id="expenses" val="{{ $expenses }}">{{ $expenses }}</span></h3>
+                                <h3><sup style="font-size: 20px">$</sup><span id="expenses"
+                                        val="{{ $expenses }}">{{ $expenses }}</span></h3>
                                 <p>Last Month: <span id="lastExpenses">${{ $lastExpenses }}</span></p>
                             </div>
                             <div class="icon">
@@ -60,7 +62,8 @@
                     <div class="col-6 col-lg-4">
                         <div class="small-box bg-success">
                             <div class="inner">
-                                <h3><sup style="font-size: 20px">$</sup><span id="revenue" val="{{ $revenue }}">{{ $revenue }}</span></h3>
+                                <h3><sup style="font-size: 20px">$</sup><span id="revenue"
+                                        val="{{ $revenue }}">{{ $revenue }}</span></h3>
                                 <p>Last Month: <span id="lastRevenue">${{ $lastRevenue }}</span></p>
                             </div>
                             <div class="icon">
@@ -75,8 +78,9 @@
                     <div class="col-12 col-lg-4">
                         <div class="small-box bg-info">
                             <div class="inner">
-                                <h3><sup style="font-size: 20px">$</sup><span id="earnings" val="{{ $revenue-$expenses }}">{{ $revenue-$expenses }}</span></h3>
-                                <p>Last Month: <span id="lastEarnings">${{ $lastRevenue-$lastExpenses }}</span></p>
+                                <h3><sup style="font-size: 20px">$</sup><span id="earnings"
+                                        val="{{ $revenue - $expenses }}">{{ $revenue - $expenses }}</span></h3>
+                                <p>Last Month: <span id="lastEarnings">${{ $lastRevenue - $lastExpenses }}</span></p>
                             </div>
                             <div class="icon">
                                 <i class="fa fa-info-circle" aria-hidden="true"></i>
@@ -115,7 +119,8 @@
                 </div>
                 <div class="col-12" id="alertToRecharge">
                     <div class="alert alert-success" role="alert">
-                        The data was successfully added, <strong><a href="javascript:void(0)" onclick="location.reload()">click here to see it</a></strong>.
+                        The data was successfully added, <strong><a href="javascript:void(0)"
+                                onclick="location.reload()">click here to see it</a></strong>.
                     </div>
                 </div>
             </div>
@@ -129,16 +134,25 @@
                             <th scope="col">Referals</th>
                             <th scope="col">Pop Ads</th>
                             <th scope="col">Others</th>
+                            <th scope="col">Options</th>
                         </tr>
                     </thead>
                     <tbody id="tbody">
                         @foreach ($items as $item)
-                            <tr>
+                            <tr id="tr-{{ $item->id }}">
                                 <td>{{ $loop->count - $loop->iteration + 1 }}</td>
                                 <td>${{ $item->links }}</td>
                                 <td>${{ $item->referals }}</td>
                                 <td>${{ $item->pop_ads }}</td>
                                 <td>${{ $item->other_ads }}</td>
+                                <td><button class="btn btn-primary btnToEdit" 
+                                    collection="{{ $item->id }}"
+                                    links="{{ $item->links }}"
+                                    referals="{{ $item->referals }}"
+                                    pop_ads="{{ $item->pop_ads }}"
+                                    other_ads="{{ $item->other_ads }}"
+                                    day="{{ $loop->count - $loop->iteration + 1 }}"
+                                    >Edit</button></td>
                             </tr>
                         @endforeach
                     </tbody>
@@ -146,7 +160,48 @@
             </div>
         </div>
     </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalTitle">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group mx-sm-4 mb-2">
+                        <label for="editLinks" class="mr-1">Links</label>
+                        <input type="number" class="form-control" id="editLinks" placeholder="0.00">
+                    </div>
+                    <div class="form-group mx-sm-4 mb-2">
+                        <label for="editReferals" class="mr-1">Referals</label>
+                        <input type="number" class="form-control" id="editReferals" placeholder="0.00">
+                    </div>
+                    <div class="form-group mx-sm-4 mb-2">
+                        <label for="editPop_ads" class="mr-1">Pop Ads</label>
+                        <input type="number" class="form-control" id="editPop_ads" placeholder="0.00">
+                    </div>
+                    <div class="form-group mx-sm-4 mb-2">
+                        <label for="editOther_ads" class="mr-1">Other Ads</label>
+                        <input type="number" class="form-control" id="editOther_ads" placeholder="0.00">
+                    </div>
+                    <input type="hidden" id="editId" value="0">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="btnUpdate">Update</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     @csrf
+
 
 @stop
 
@@ -156,8 +211,8 @@
 
 @section('js')
     <script>
-
-        let countItems = {{ $items->count() }}; /*this is for count numbers of the items and next get the last number of the table*/
+        let countItems =
+        {{ $items->count() }}; /*this is for count numbers of the items and next get the last number of the table*/
     </script>
     <script src="{{ asset('js/statistics.js') }}"></script>
 @stop

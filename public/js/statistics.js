@@ -1,7 +1,15 @@
 const csrf = document.querySelector('[name="_token"]').value;
+
+const thisDate = new Date();
+const thisMonth = thisDate.getMonth() + 1;
+const thisYear = thisDate.getFullYear();
+const alertToRecharge = document.querySelector('#alertToRecharge');
+
 const selectMonth = document.querySelector('#month');
 const selectYear = document.querySelector('#year');
 const getDataBtn = document.querySelector('#getData');
+let searchData = false;
+
 const spanSpin = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...`;
 
 const revenue = document.querySelector('#revenue');
@@ -13,11 +21,14 @@ const clearInputs = document.querySelector('#clearInputs');
 
 
 const tbody = document.querySelector('#tbody');
-const thisDate = new Date();
-const thisMonth = thisDate.getMonth() + 1;
-const thisYear = thisDate.getFullYear();
-const alertToRecharge = document.querySelector('#alertToRecharge');
-let searchData = false;
+const btnToEdit = document.querySelectorAll('.btnToEdit');
+const btnUpdate = document.querySelector('#btnUpdate');
+
+
+
+
+
+
 function index() {
 
     const params = {
@@ -245,6 +256,10 @@ function appendTableStructure(countItems, links, referals, pop_ads, other_ads) {
 
 function changeDataCard(valRevenue, valExpenses, valLastRevenue, valLastExpenses){
 
+    /**
+     * Only when we search new data
+     */
+
     revenue.value       = valRevenue.toFixed(2);
     expenses.value      = valExpenses.toFixed(2);
     lastRevenue.value   = valLastRevenue.toFixed(2);
@@ -281,7 +296,103 @@ function infoDates() {
 
 
 }
+
 infoDates();
 clearInputs.checked = true;
+
+
+
+function show(value){
+    const id = value.target.getAttribute('collection');
+    const links = value.target.getAttribute('links');
+    const referals = value.target.getAttribute('referals');
+    const pop_ads = value.target.getAttribute('pop_ads');
+    const other_ads = value.target.getAttribute('other_ads');
+    const day = value.target.getAttribute('day');
+
+    const modalTitle = document.querySelector('#modalTitle');
+    const editId = document.querySelector('#editId');
+
+    editId.value = id;
+    editLinks.value = links;
+    editReferals.value = referals;
+    editPop_ads.value = pop_ads;
+    editOther_ads.value = other_ads;
+    modalTitle.innerText = `Update day ${day}`;
+
+    $("#editModal").modal("show");
+
+}
+
+function update(){
+
+
+    const id = document.querySelector('#editId');
+    const links = document.querySelector('#editLinks');
+    console.log('#links', links);
+    const referals = document.querySelector('#editReferals');
+    const pop_ads = document.querySelector('#editPop_ads');
+    const other_ads = document.querySelector('#editOther_ads');
+
+
+    const params = {
+        type: "put",
+        id: id.value,
+        links: links.value || 0,
+        referals: referals.value || 0,
+        pop_ads: pop_ads.value || 0,
+        other_ads: other_ads.value || 0,
+        _token: csrf,
+    };
+    console.log('params', params);
+    $.ajax({
+            url: "statistics/request",
+            method: "POST",
+            data: params,
+            beforeSend: function () {},
+            statusCode: {
+                404: () => {
+                    msgSweetAlert("404");
+                },
+                500: () => {
+                    msgSweetAlert("500");
+                },
+            },
+        })
+        .done(function (response) {
+            console.log('response', response);
+            if (response.success) {
+                msgSweetAlert("success");
+
+                const tr = document.querySelector(`#tr-${id.value}`);
+                tr.innerHTML = '';
+                
+
+
+
+
+                
+
+            } else {
+                msgSweetAlert("error");
+            }
+        })
+        .then(() => {});
+
+
+
+}
+
+
+
+btnUpdate.addEventListener('click', update);
+
+
+
+btnToEdit.forEach(element => {
+    element.addEventListener('click', show);
+});
+
+
 saveData.addEventListener('click', add);
 getDataBtn.addEventListener('click', index);
