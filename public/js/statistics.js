@@ -12,15 +12,6 @@ const earnings = document.querySelector('#earnings');
 const clearInputs = document.querySelector('#clearInputs');
 
 
-console.log('revenue', revenue);
-
-console.log('revenue', revenue.getAttribute('value'));
-
-
-console.log('revenue.value ', revenue.value);
-console.log('expenses.value ', expenses.value);
-console.log('earnings.value ', earnings.value);
-
 const tbody = document.querySelector('#tbody');
 const thisDate = new Date();
 const thisMonth = thisDate.getMonth() + 1;
@@ -141,36 +132,26 @@ function add() {
                     appendTableStructure(countItems, links.value || 0, referals.value || 0, pop_ads.value || 0, other_ads.value || 0);
 
 
-                    console.log('revenue.value ', revenue.getAttribute('value'));
-                    console.log('expenses.value ', expenses.getAttribute('value'));
-                    console.log('earnings.value ', earnings.getAttribute('value'));
-
-                    console.log('pop_ads.value', pop_ads.value);
-                    console.log('other_ads.value', other_ads.value);
-
-                    console.log('links.value', links.value);
-                    console.log('referals.value', referals.value);
-
 
                     //originalRevenuel as revenue plus the new revenue. All this is for show at real time the new changes
-                    const newRevenue    = parseInt(revenue.getAttribute('value'))+parseInt(pop_ads.value)+parseInt(other_ads.value);
-                    const newExpenses   = parseInt(expenses.getAttribute('value'))+parseInt(links.value)+parseInt(referals.value);
+                    const newRevenue    = parseInt(revenue.getAttribute('val'))+parseInt(pop_ads.value)+parseInt(other_ads.value);
+                    const newExpenses   = parseInt(expenses.getAttribute('val'))+parseInt(links.value)+parseInt(referals.value);
                     const newEarnings   = parseInt(newRevenue-newExpenses);
 
-                    console.log('newRevenue', newRevenue);
-                    console.log('newExpenses', newExpenses);
-                    console.log('newEarnings', newEarnings);
 
-                    console.log('revenue.value ', revenue.value);
-                    console.log('expenses.value ', expenses.value);
-                    console.log('earnings.value ', earnings.value);
+                    /**
+                     * remove the val attribute from the span element and next set the same attribute with the new value
+                     */
+                    revenue.removeAttribute('val');
+                    expenses.removeAttribute('val');
+                    earnings.removeAttribute('val');
 
-                    revenue.value       = newRevenue; 
-                    expenses.value      = newExpenses;
-                    earnings.value      = newEarnings;
-
+                    revenue.setAttribute('val', newRevenue);
+                    expenses.setAttribute('val', newExpenses);
+                    earnings.setAttribute('val', newEarnings);
+                    
                     revenue.innerHTML   = newRevenue;
-                    expenses.innerHTML  = newRevenue;
+                    expenses.innerHTML  = newExpenses;
                     earnings.innerHTML  = newEarnings;
 
                 }else{

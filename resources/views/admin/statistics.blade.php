@@ -48,7 +48,7 @@
                     <div class="col-6 col-lg-4">
                         <div class="small-box bg-danger">
                             <div class="inner">
-                                <h3><sup style="font-size: 20px">$</sup><span id="expenses" value="{{ $expenses }}">{{ $expenses }}</span></h3>
+                                <h3><sup style="font-size: 20px">$</sup><span id="expenses" val="{{ $expenses }}">{{ $expenses }}</span></h3>
                                 <p>Last Month: <span id="lastExpenses">${{ $lastExpenses }}</span></p>
                             </div>
                             <div class="icon">
@@ -60,7 +60,7 @@
                     <div class="col-6 col-lg-4">
                         <div class="small-box bg-success">
                             <div class="inner">
-                                <h3><sup style="font-size: 20px">$</sup><span id="revenue" value="{{ $revenue }}">{{ $revenue }}</span></h3>
+                                <h3><sup style="font-size: 20px">$</sup><span id="revenue" val="{{ $revenue }}">{{ $revenue }}</span></h3>
                                 <p>Last Month: <span id="lastRevenue">${{ $lastRevenue }}</span></p>
                             </div>
                             <div class="icon">
@@ -75,7 +75,7 @@
                     <div class="col-12 col-lg-4">
                         <div class="small-box bg-info">
                             <div class="inner">
-                                <h3><sup style="font-size: 20px">$</sup><span id="earnings" value="{{ $revenue-$expenses }}">{{ $revenue-$expenses }}</span></h3>
+                                <h3><sup style="font-size: 20px">$</sup><span id="earnings" val="{{ $revenue-$expenses }}">{{ $revenue-$expenses }}</span></h3>
                                 <p>Last Month: <span id="lastEarnings">${{ $lastRevenue-$lastExpenses }}</span></p>
                             </div>
                             <div class="icon">
