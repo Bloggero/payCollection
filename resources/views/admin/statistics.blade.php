@@ -190,6 +190,7 @@
                         <input type="number" class="form-control" id="editOther_ads" placeholder="0.00">
                     </div>
                     <input type="hidden" id="editId" value="0">
+                    <input type="hidden" id="editDay" value="0">
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

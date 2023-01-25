@@ -61,7 +61,7 @@ function index() {
             },
         })
         .done(function (response) {
-
+            console.log('response', response);
             searchData = true;
             if (response.success) {
                 tbody.innerHTML = ``;
@@ -81,12 +81,16 @@ function index() {
 
                     data.reverse();
                     data.forEach((element, index) => {
-                        appendTableStructure(index + 1, element.links || 0, element.referals || 0, element.pop_ads || 0, element.other_ads || 0);
+                        appendTableStructure(index + 1, element.links || 0, element.referals || 0, element.pop_ads || 0, element.other_ads || 0, 'create', element.id);
                     });
 
+
+                    
+
                     const thisRevenue = data.reduce((acc, item) => acc + item.pop_ads, 0) + data.reduce((acc, item) => acc + item.other_ads, 0);
+
                     const thisExpenses = data.reduce((acc, item) => acc + item.links, 0) + data.reduce((acc, item) => acc + item.referals, 0);
-                    console.log('thisRevenue', thisRevenue);
+                    
                     changeDataCard(thisRevenue || 0, thisExpenses || 0, response.lastItems.lastRevenue || 0, response.lastItems.lastExpenses || 0);
                     
                 }
@@ -131,6 +135,7 @@ function add() {
         })
         .done(function (response) {
             console.log('response', response);
+            console.log('response', response.id);
             if (response.success) {
 
                 msgSweetAlert("success");
@@ -140,7 +145,7 @@ function add() {
                  */
                 if (!searchData) {
                     countItems++;
-                    appendTableStructure(countItems, links.value || 0, referals.value || 0, pop_ads.value || 0, other_ads.value || 0);
+                    appendTableStructure(countItems, links.value || 0, referals.value || 0, pop_ads.value || 0, other_ads.value || 0,  'create', response.id);
 
 
 
@@ -183,50 +188,104 @@ function add() {
         .then(() => {});
 }
 
-function msgSweetAlert(value) {
-    switch (value) {
-        case "500":
-            Swal.fire({
-                icon: "error",
-                title: "Oops...",
-                text: "Internal Server Error (500)",
-            });
-            break;
-        case "404":
-            Swal.fire({
-                icon: "error",
-                title: "Oops...",
-                text: "Not Found (404)",
-            });
-            break;
-        case "422":
-            Swal.fire({
-                icon: "error",
-                title: "Oops...",
-                text: "Unprocessable Content (422)",
-            });
-            break;
-        case "success":
-            Swal.fire("Good job!", "Success!", "success");
-            break;
-        case "deleted":
-            Swal.fire("Deleted!", "Your file has been deleted.", "success");
-            break;
-        case "error":
-            Swal.fire({
-                icon: "error",
-                title: "Oops...",
-                text: "Something went wrong!",
-            });
-            break;
-        default:
-            break;
-    }
+function show(value){
+    const id = value.target.getAttribute('collection');
+    const links = value.target.getAttribute('links');
+    const referals = value.target.getAttribute('referals');
+    const pop_ads = value.target.getAttribute('pop_ads');
+    const other_ads = value.target.getAttribute('other_ads');
+    const day = value.target.getAttribute('day');
+
+    const modalTitle = document.querySelector('#modalTitle');
+    const editId = document.querySelector('#editId');
+    const editDay = document.querySelector('#editDay');
+
+    editId.value = id;
+    editLinks.value = links;
+    editReferals.value = referals;
+    editPop_ads.value = pop_ads;
+    editOther_ads.value = other_ads;
+    editDay.value = day;
+    modalTitle.innerText = `Update day ${day}`;
+
+    $("#editModal").modal("show");
+
 }
 
-function appendTableStructure(countItems, links, referals, pop_ads, other_ads) {
+function update(){
 
-    const tr = document.createElement("tr");
+
+    const id = document.querySelector('#editId');
+    const links = document.querySelector('#editLinks');
+    const referals = document.querySelector('#editReferals');
+    const pop_ads = document.querySelector('#editPop_ads');
+    const other_ads = document.querySelector('#editOther_ads');
+    const editDay = document.querySelector('#editDay');
+
+
+    const params = {
+        type: "put",
+        id: id.value,
+        links: links.value || 0,
+        referals: referals.value || 0,
+        pop_ads: pop_ads.value || 0,
+        other_ads: other_ads.value || 0,
+        _token: csrf,
+    };
+    console.log('params', params);
+    $.ajax({
+            url: "statistics/request",
+            method: "POST",
+            data: params,
+            beforeSend: function () {},
+            statusCode: {
+                404: () => {
+                    msgSweetAlert("404");
+                },
+                500: () => {
+                    msgSweetAlert("500");
+                },
+            },
+        })
+        .done(function (response) {
+            console.log('response', response);
+            if (response.success) {
+                msgSweetAlert("success");
+
+                appendTableStructure(editDay.value, links.value || 0, referals.value || 0, pop_ads.value || 0, other_ads.value || 0,  'update', `tr-${id.value}`);
+
+
+                /**
+                 * Podría tomar los datos iniciales, restarlos a lass variables y luego sumarle los cambios
+                 *  */ 
+                changeDataCard(valRevenue, valExpenses, valLastRevenue, valLastExpenses)
+
+                $("#editModal").modal("hide");
+
+                
+
+            } else {
+                msgSweetAlert("error");
+            }
+        })
+        .then(() => {});
+}
+
+
+
+function appendTableStructure(countItems, links, referals, pop_ads, other_ads, type, id) {
+    let tr;
+    console.log('id', id);
+    if(type == 'update'){
+        tr = document.querySelector(`#${id}`);
+        tr.innerHTML = '';
+        id = id.replace('tr-', '');
+    }else if(type == 'create'){
+        tr = document.createElement("tr");
+        tr.id = `tr-${id}`;
+        editId.value = id;
+    }
+
 
     const tdDay = document.createElement("td");
     tdDay.innerText = `${countItems}`;
@@ -243,14 +302,38 @@ function appendTableStructure(countItems, links, referals, pop_ads, other_ads) {
     const tdOhter_ads = document.createElement("td");
     tdOhter_ads.innerText = `$${other_ads}`;
 
+    const tdButton = document.createElement("td");
+
+    tdButton.innerHTML = `                                
+    <button class="btn btn-primary btnToEdit" 
+    collection="${id}"
+    links="${links}"
+    referals="${referals}"
+    pop_ads="${pop_ads}"
+    other_ads="${other_ads}"
+    day="${countItems}"
+    onClick="show(${id})"
+    >Edit</button>`;
+
 
     tr.append(tdDay);
     tr.append(tdLinks);
     tr.append(tdReferals);
     tr.append(tdPop_ads);
     tr.append(tdOhter_ads);
-    tbody.prepend(tr);
+    tr.append(tdButton);
 
+    if(type == 'update'){
+    }else if(type == 'create'){
+        tbody.prepend(tr);
+    }
+
+    const btnToEdit = document.querySelectorAll('.btnToEdit');
+    btnToEdit.forEach(element => {
+        element.addEventListener('click', show);
+    });
+    
+    return;
 
 }
 
@@ -297,91 +380,52 @@ function infoDates() {
 
 }
 
+function msgSweetAlert(value) {
+    switch (value) {
+        case "500":
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "Internal Server Error (500)",
+            });
+            break;
+        case "404":
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "Not Found (404)",
+            });
+            break;
+        case "422":
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "Unprocessable Content (422)",
+            });
+            break;
+        case "success":
+            Swal.fire("Good job!", "Success!", "success");
+            break;
+        case "deleted":
+            Swal.fire("Deleted!", "Your file has been deleted.", "success");
+            break;
+        case "error":
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "Something went wrong!",
+            });
+            break;
+        default:
+            break;
+    }
+}
+
 infoDates();
 clearInputs.checked = true;
 
 
 
-function show(value){
-    const id = value.target.getAttribute('collection');
-    const links = value.target.getAttribute('links');
-    const referals = value.target.getAttribute('referals');
-    const pop_ads = value.target.getAttribute('pop_ads');
-    const other_ads = value.target.getAttribute('other_ads');
-    const day = value.target.getAttribute('day');
-
-    const modalTitle = document.querySelector('#modalTitle');
-    const editId = document.querySelector('#editId');
-
-    editId.value = id;
-    editLinks.value = links;
-    editReferals.value = referals;
-    editPop_ads.value = pop_ads;
-    editOther_ads.value = other_ads;
-    modalTitle.innerText = `Update day ${day}`;
-
-    $("#editModal").modal("show");
-
-}
-
-function update(){
-
-
-    const id = document.querySelector('#editId');
-    const links = document.querySelector('#editLinks');
-    console.log('#links', links);
-    const referals = document.querySelector('#editReferals');
-    const pop_ads = document.querySelector('#editPop_ads');
-    const other_ads = document.querySelector('#editOther_ads');
-
-
-    const params = {
-        type: "put",
-        id: id.value,
-        links: links.value || 0,
-        referals: referals.value || 0,
-        pop_ads: pop_ads.value || 0,
-        other_ads: other_ads.value || 0,
-        _token: csrf,
-    };
-    console.log('params', params);
-    $.ajax({
-            url: "statistics/request",
-            method: "POST",
-            data: params,
-            beforeSend: function () {},
-            statusCode: {
-                404: () => {
-                    msgSweetAlert("404");
-                },
-                500: () => {
-                    msgSweetAlert("500");
-                },
-            },
-        })
-        .done(function (response) {
-            console.log('response', response);
-            if (response.success) {
-                msgSweetAlert("success");
-
-                const tr = document.querySelector(`#tr-${id.value}`);
-                tr.innerHTML = '';
-                
-
-
-
-
-                
-
-            } else {
-                msgSweetAlert("error");
-            }
-        })
-        .then(() => {});
-
-
-
-}
 
 
 

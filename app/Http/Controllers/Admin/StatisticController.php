@@ -24,7 +24,6 @@ class StatisticController extends Controller
             switch ($request->type) {
                 case 'post':
                     $request = StatisticController::store($request);
-                    $request = response()->json(['success' => $request]);
                 break;
                 case 'put':
                     $request = StatisticController::update($request);
@@ -121,7 +120,9 @@ class StatisticController extends Controller
         $response->pop_ads = $request['pop_ads'];
         $response->other_ads = $request['other_ads'];
 
-        return $response->save();
+        $response->save();
+
+        return response()->json(['success' => $request, 'id' => $response->id, ]);
     }
 
     /**
