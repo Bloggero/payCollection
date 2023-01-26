@@ -189,16 +189,24 @@ function add() {
 }
 
 function show(value){
-    const id = value.target.getAttribute('collection');
-    const links = value.target.getAttribute('links');
-    const referals = value.target.getAttribute('referals');
-    const pop_ads = value.target.getAttribute('pop_ads');
-    const other_ads = value.target.getAttribute('other_ads');
-    const day = value.target.getAttribute('day');
+    const id        = typeof value == 'number' ? value : value.target.getAttribute('collection');
+    const links     = typeof value == 'number' ? value :  value.target.getAttribute('links');
+    const referals  = typeof value == 'number' ? value :  value.target.getAttribute('referals');
+    const pop_ads   = typeof value == 'number' ? value :  value.target.getAttribute('pop_ads');
+    const other_ads = typeof value == 'number' ? value :  value.target.getAttribute('other_ads');
+    const day       = typeof value == 'number' ? value :  value.target.getAttribute('day');
 
     const modalTitle = document.querySelector('#modalTitle');
     const editId = document.querySelector('#editId');
     const editDay = document.querySelector('#editDay');
+
+    console.log('id', id);
+    console.log('links', links);
+    console.log('referals', referals);
+    console.log('pop_ads', pop_ads);
+    console.log('other_ads', other_ads);
+    console.log('day', day);
+
 
     editId.value = id;
     editLinks.value = links;
@@ -258,7 +266,7 @@ function update(){
                 /**
                  * Podría tomar los datos iniciales, restarlos a lass variables y luego sumarle los cambios
                  *  */ 
-                changeDataCard(valRevenue, valExpenses, valLastRevenue, valLastExpenses)
+                // changeDataCard(valRevenue, valExpenses, valLastRevenue, valLastExpenses)
 
                 $("#editModal").modal("hide");
 
