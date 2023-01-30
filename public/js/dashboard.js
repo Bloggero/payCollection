@@ -131,21 +131,31 @@ function show(value) {
         })
         .done(function (response) {
             if (response.success) {
+                console.log('response', response);
                 const items = response.items.reverse();
+                const currency = function (number) {
+
+                    return new Intl.NumberFormat("en-us", {
+                        style: "currency",
+                        currency: "USD",
+                        minimumFractionDigits: 2,
+                    }).format(number);
+
+                };
                 items.forEach((element) => {
+
+
+
+
                     const tr = document.createElement("tr");
                     const tdAmount = document.createElement("td");
                     const tdPay = document.createElement("td");
                     const tdCreated = document.createElement("td");
                     const tdPayment = document.createElement("td");
                     const amountLocal = element.amount;
-                    const currency = function (number) {
-                        return new Intl.NumberFormat("en-us", {
-                            style: "currency",
-                            currency: "USD",
-                            minimumFractionDigits: 2,
-                        }).format(number);
-                    };
+
+
+
                     tdAmount.innerText = currency(amountLocal);
                     element.pay ?
                         tr.classList.add("table-success") :
@@ -159,19 +169,62 @@ function show(value) {
                     ).toLocaleDateString();
                     const al = new Date(element.updated_at);
 
-                    tr.appendChild(tdAmount);
                     tr.appendChild(tdPay);
                     tr.appendChild(tdCreated);
                     tr.appendChild(tdPayment);
+                    tr.appendChild(tdAmount);
+
                     userCollectionsTable.appendChild(tr);
-                    $("#showCardModal").modal("show");
                 });
+
+                let totalAmount = response.items;
+                let totalPayed = totalAmount.filter(element => element.pay == 1).reduce((sum, element) => sum + element.amount, 0);
+                let totalUnpayed = totalAmount.filter(element => element.pay == 0).reduce((sum, element) => sum + element.amount, 0);
+
+                totalAmount = totalPayed - totalUnpayed;
+
+                updateTableInfo('table-secondary','','',`<b>Payed</b>`, `<b>${currency(totalPayed)}</b>`);
+                updateTableInfo('table-secondary','','',`<b>Unpayed</b>`, `<b>${currency(totalUnpayed)}</b>`);
+                updateTableInfo('table-success','','',`<b>Total</b>`, `<b>${currency(totalAmount)}</b>`);
+
+                $("#showCardModal").modal("show");
+
+
             } else {
                 msgSweetAlert("error");
             }
         })
         .then(() => {});
 }
+
+function updateTableInfo(tr, pay, created, payment, amount){
+    const thisTr = document.createElement("tr");
+    thisTr.classList.add(`${tr}`);
+    
+    const tdPay = document.createElement("td");
+    tdPay.innerHTML = pay;
+
+    const tdCreated = document.createElement("td");
+    tdCreated.innerHTML = created;
+
+    const tdPayment = document.createElement("td");
+    tdPayment.innerHTML = payment;
+
+    const tdAmount = document.createElement("td");
+    tdAmount.innerHTML = amount;
+
+    thisTr.appendChild(tdPay);
+    thisTr.appendChild(tdCreated);
+    thisTr.appendChild(tdPayment);
+    thisTr.appendChild(tdAmount);
+
+    userCollectionsTable.appendChild(thisTr);
+
+    return;
+
+
+}
+
 
 function pay(value) {
     console.log('value', value);

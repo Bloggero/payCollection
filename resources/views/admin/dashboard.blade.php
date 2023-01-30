@@ -105,7 +105,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="showCardModalLabel">Add new user</h5>
+                    <h5 class="modal-title" id="showCardModalLabel">View Data</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -115,10 +115,10 @@
                     <table class="table table-bordered">
                         <thead>
                             <tr>
-                                <th>Amount</th>
                                 <th>Paid</th>
                                 <th>Created</th>
                                 <th>Updated</th>
+                                <th>Amount</th>
                             </tr>
                         </thead>
                         <tbody id="userCollectionsTable">
@@ -172,13 +172,6 @@
                             <textarea name="description" id="description" rows="5" class="form-control">dda</textarea>
                         </div>
                         <div class="form-row">
-                            {{-- <div class="form-group col-6">
-                                <label for="credit_type">Init</label>
-                                <select name="credit_type" id="credit_type" class="form-control">
-                                    <option value="from">From</option>
-                                    <option value="to">To</option>
-                                </select>
-                            </div> --}}
                             <div class="form-group col-6">
                                 <label for="date_info">Date</label>
                                 <input type="date" name="date_info" id="date_info" class="form-control" value="2023-01-03">
