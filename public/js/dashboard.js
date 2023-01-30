@@ -34,7 +34,6 @@ function add() {
             },
         })
         .done(function (response) {
-            console.log('responseeeeee', response);
             if (response.success) {
                 $("#newUserModal").modal("hide");
                 msgSweetAlert("success");
@@ -47,7 +46,6 @@ function add() {
         })
         .then(() => {});
 }
-
 
 function createElement(type, name, userId, description, amount, itemId) {
     const payDataDivRow = document.querySelector('#payDataDivRow');
@@ -131,7 +129,6 @@ function show(value) {
         })
         .done(function (response) {
             if (response.success) {
-                console.log('response', response);
                 const items = response.items.reverse();
                 const currency = function (number) {
 
@@ -143,38 +140,18 @@ function show(value) {
 
                 };
                 items.forEach((element) => {
-
-
-
-
-                    const tr = document.createElement("tr");
-                    const tdAmount = document.createElement("td");
-                    const tdPay = document.createElement("td");
-                    const tdCreated = document.createElement("td");
-                    const tdPayment = document.createElement("td");
-                    const amountLocal = element.amount;
-
-
-
-                    tdAmount.innerText = currency(amountLocal);
-                    element.pay ?
-                        tr.classList.add("table-success") :
-                        tr.classList.add("table-danger");
-                    tdPay.innerText = element.pay ? "Yes" : "No";
-                    tdCreated.innerText = new Date(
+                    let tr = '', pay = '', created = '', updated = ''; 
+                    element.pay ? tr = "table-success" : tr = "table-danger";
+                    pay = element.pay ? "Yes" : "No";
+                    created = new Date(
                         element.created_at
                     ).toLocaleDateString();
-                    tdPayment.innerText = new Date(
+                    updated = new Date(
                         element.updated_at
                     ).toLocaleDateString();
-                    const al = new Date(element.updated_at);
 
-                    tr.appendChild(tdPay);
-                    tr.appendChild(tdCreated);
-                    tr.appendChild(tdPayment);
-                    tr.appendChild(tdAmount);
+                    updateTableInfo(tr, pay, created, updated, currency(element.amount));
 
-                    userCollectionsTable.appendChild(tr);
                 });
 
                 let totalAmount = response.items;
@@ -221,13 +198,9 @@ function updateTableInfo(tr, pay, created, payment, amount){
     userCollectionsTable.appendChild(thisTr);
 
     return;
-
-
 }
 
-
 function pay(value) {
-    console.log('value', value);
     let collection;
 
     if (typeof value === 'number') {
@@ -237,7 +210,6 @@ function pay(value) {
         collection = value.target.getAttribute("collection");
     }
 
-    console.log('collection', collection);
 
 
     const params = {
@@ -275,7 +247,6 @@ function pay(value) {
                     },
                 })
                 .done(function (response) {
-                    console.log('response', response);
                     if (response.success) {
 
 

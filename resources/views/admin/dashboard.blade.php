@@ -169,12 +169,12 @@
                         </div>
                         <div class="form-group">
                             <label for="description">Description</label>
-                            <textarea name="description" id="description" rows="5" class="form-control">dda</textarea>
+                            <textarea name="description" id="description" rows="5" class="form-control" placeholder="description"></textarea>
                         </div>
                         <div class="form-row">
                             <div class="form-group col-6">
                                 <label for="date_info">Date</label>
-                                <input type="date" name="date_info" id="date_info" class="form-control" value="2023-01-03">
+                                <input type="date" name="date_info" id="date_info" class="form-control" value="">
                             </div>
                             <div class="form-group col-6">
                                 <label for="time_type">Range</label>
@@ -189,7 +189,7 @@
                         </div>
                         <div class="form-group">
                             <label for="amount">Amount</label>
-                            <input type="number" name="amount" id="amount" class="form-control" value="30">
+                            <input type="number" name="amount" id="amount" class="form-control" placeholder="0.00">
                         </div>
                         {{-- <div class="form-group form-check">
                             <input type="checkbox" class="form-check-input" id="extends_data">
@@ -215,5 +215,5 @@
 @stop
 
 @section('js')
-    <script src="{{ asset('js/dashboard.js') }}"></script>
+    <script src="{{ asset('js/dashboard.js') }}"></>
 @stop
