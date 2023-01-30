@@ -18,32 +18,37 @@ class CollectionController extends Controller
      */
     public function index(Request $request)
     {
-        if(isset($request->type)){
+        if (isset($request->type)) {
             switch ($request->type) {
                 case 'post':
                     $requestToArray = $request;
                     $request = CollectionController::newCollection($requestToArray);
-                break;
+                    break;
                 case 'get':
                     $request = CollectionController::show($request->user_id);
-                break;
+                    break;
                 case 'update':
                     $request = CollectionController::update($request->collection);
-                break;
+                    break;
                 default:
                     $request = response()->json(['success' => false]);
-                break;
+                    break;
             }
             return $request;
+        } else {
 
-        }else{
-            
-            $getData = Collection::orderBy('id', 'desc')->get();/*use username in the element for foreing key*/
+            $paidData = Collection::where('pay', '1')->orderBy('id', 'desc')->get();/*use username in the element for foreing key*/
+            $payData = Collection::where('pay', '0')->orderBy('id', 'desc')->get();/*use username in the element for foreing key*/
+
             $getUsers = User::orderBy('id', 'desc')->get();
-            return view('admin.dashboard', 
-                        ['data' => $getData,
-                        'users' => $getUsers]
-                    );
+            return view(
+                'admin.dashboard',
+                [
+                    'paidData' => $paidData,
+                    'payData' => $payData,
+                    'users' => $getUsers
+                ]
+            );
         }
     }
 
@@ -55,15 +60,17 @@ class CollectionController extends Controller
     public function newCollection($request)
     {
         //segun el curso de laravel 6 se guardan los datos en store y ahí se hacen las validaciones con $request->validate([])
-        if($request->user != 'nothing'){
-            $request = CollectionController::store($request, $request['user']);
-            
+        if ($request->user != 'nothing') {
+            $response = CollectionController::store($request, $request['user']);
+            $lastInsert = Collection::latest()->first();
+            $user = User::find($request->user);
+
             return response()->json([
-                'success' => $request, 
-                'user_id' => '', 
-                'name' => '', 
-                'email' => ''
-                ]);
+                'success' => $response,
+                'user_id' => $user->id,
+                'name' => $user->name,
+                'itemId' => $lastInsert->id
+            ]);
         }
 
         $newEmail = Str::remove(' ', $request->name) . '@example.com';
@@ -81,16 +88,16 @@ class CollectionController extends Controller
         }
 
         //en caso que si se ha guardado seguimos con el resto
-        $request = CollectionController::store($request, $createNewUser->id);
+        $response = CollectionController::store($request, $createNewUser->id);
+        $lastInsert = Collection::latest()->first();
 
 
-            return response()->json([
-                                    'success' => $request, 
-                                    'user_id' => $createNewUser->id, 
-                                    'name' => $createNewUser->name, 
-                                    'email' => $createNewUser->email
-                                    ]);
-
+        return response()->json([
+            'success' => $response,
+            'user_id' => $createNewUser->id,
+            'name' => $createNewUser->name,
+            'itemId' => $lastInsert->id
+        ]);
     }
 
     /**
@@ -112,7 +119,6 @@ class CollectionController extends Controller
         $response->extends      = $request['extends'] == 'true' ? 1 : 0;
 
         return $response->save();
-
     }
 
     /**
@@ -145,15 +151,18 @@ class CollectionController extends Controller
     public function update($id)
     {
         //
-        $request = Collection::findOrFail($id);
-        $request->pay = 1;
-        if($request->save()){
-            return response()->json(['success' => true]);
-        }else{
-            return response()->json(['success' => false]);
-        }
-
-
+        $response = Collection::findOrFail($id);
+        $user = User::find($response->user_id);
+        $response->pay = 1;
+            return response()->json([
+                'success' => $response->save(),
+                'user_id' => $response->user_id,
+                'name' => $user->name,
+                'description' => $response->description,
+                'amount' => $response->amount,
+                'itemId' => $response->id
+            ]);
+        
     }
 
     /**
