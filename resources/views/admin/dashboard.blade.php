@@ -13,40 +13,88 @@
             <div class="col-12" id="divBtnNewUser">
                 <button class="btn btn-primary float-right" data-toggle="modal" data-target="#newUserModal">New User</button>
             </div>
-            {{-- {{dd($data)}} --}}
-            @if (count($data) < 0)
-                <h1>No items to display yet.</h1>
-            @endif
-            @foreach ($data as $element)
-                <div class="col-12 col-sm-12 col-md-4 col-lg-3">
-                    <div class="card">
-                        <div class="card-header">
-                            <b>{{ $element->username->name }}</b>
-                            {{-- <label class="float-right" data-toggle="modal" data-target="#showCardModal"><i class="fa fa-eye" --}}
-                                <label class="float-right"><i class="fa fa-eye showUser"
-                                    aria-hidden="true" id="showUser-{{$element->user_id}}" user="{{$element->user_id}}"></i></label>
-                        </div>
-                        <div class="card-body">
-                            <p class="card-text text-muted">{{ $element->description }}</p>
-                            <hr />
-                            @if ($element->pay == 0)
-                                <p class="card-text text-danger" id="amount-{{$element->id}}"><b>${{ $element->amount }}</b></p>
-                            @else
-                                <p class="card-text text-success"><b>${{ $element->amount }}</b></p>
-                            @endif
-                        </div>
-                        @if ($element->pay == 0)
-                            <a href="javascript:void(0)" class="card-link bg-success paynow" id="a-{{$element->id}}">
-                            @else
-                                <a href="javascript:void(0)" class="card-link bg-secondary" disabled="true"
-                                    style="pointer-events: none;">
-                        @endif
-                        <div class="card-footer text-center" collection="{{$element->id}}" id="collection-{{$element->id}}">Pay</div>
-                        </a>
-                    </div>
+            <div class="col-12 mb-3" id="payDataDiv">
+                <div class="row" id="payDataDivRow">
+                    {{-- {{dd($payData)}} --}}
+                    @if (count($payData) < 0)
+                        <h1>No items to display yet.</h1>
+                    @endif
+                    @foreach ($payData as $element)
+                        <div class="col-12 col-sm-12 col-md-4 col-lg-3" id="element-{{ $element->id }}">
+                            <div class="card">
+                                <div class="card-header">
+                                    <b>{{ $element->username->name }}</b>
+                                    {{-- <label class="float-right" data-toggle="modal" data-target="#showCardModal"><i class="fa fa-eye" --}}
+                                    <label class="float-right"><i class="fa fa-eye showUser" aria-hidden="true"
+                                            id="showUser-{{ $element->user_id }}"
+                                            user="{{ $element->user_id }}"></i></label>
+                                </div>
+                                <div class="card-body">
+                                    <p class="card-text text-muted">{{ $element->description }}</p>
+                                    <hr />
+                                    @if ($element->pay == 0)
+                                        <p class="card-text text-danger" id="amount-{{ $element->id }}">
+                                            <b>${{ $element->amount }}</b></p>
+                                    @else
+                                        <p class="card-text text-success"><b>${{ $element->amount }}</b></p>
+                                    @endif
+                                </div>
+                                @if ($element->pay == 0)
+                                    <a href="javascript:void(0)" class="card-link bg-success paynow"
+                                        id="a-{{ $element->id }}">
+                                    @else
+                                        <a href="javascript:void(0)" class="card-link bg-secondary" disabled="true"
+                                            style="pointer-events: none;">
+                                @endif
+                                <div class="card-footer text-center" collection="{{ $element->id }}"
+                                    id="collection-{{ $element->id }}">Pay</div>
+                                </a>
+                            </div>
 
+                        </div>
+                    @endforeach
                 </div>
-            @endforeach
+                <hr>
+
+            </div>
+            <div class="col-12 pt-1" id="paidDataDiv">
+                <div class="row"  id="paidDataDivRow">
+                    @foreach ($paidData as $element)
+                        <div class="col-12 col-sm-12 col-md-4 col-lg-3" id="element-${{ $element->id }}">
+                            <div class="card">
+                                <div class="card-header">
+                                    <b>{{ $element->username->name }}</b>
+                                    {{-- <label class="float-right" data-toggle="modal" data-target="#showCardModal"><i class="fa fa-eye" --}}
+                                    <label class="float-right"><i class="fa fa-eye showUser" aria-hidden="true"
+                                            id="showUser-{{ $element->user_id }}"
+                                            user="{{ $element->user_id }}"></i></label>
+                                </div>
+                                <div class="card-body">
+                                    <p class="card-text text-muted">{{ $element->description }}</p>
+                                    <hr />
+                                    @if ($element->pay == 0)
+                                        <p class="card-text text-danger" id="amount-{{ $element->id }}">
+                                            <b>${{ $element->amount }}</b></p>
+                                    @else
+                                        <p class="card-text text-success"><b>${{ $element->amount }}</b></p>
+                                    @endif
+                                </div>
+                                @if ($element->pay == 0)
+                                    <a href="javascript:void(0)" class="card-link bg-success paynow"
+                                        id="a-{{ $element->id }}">
+                                    @else
+                                        <a href="javascript:void(0)" class="card-link bg-secondary" disabled="true"
+                                            style="pointer-events: none;">
+                                @endif
+                                <div class="card-footer text-center" collection="{{ $element->id }}"
+                                    id="collection-{{ $element->id }}">Pay</div>
+                                </a>
+                            </div>
+
+                        </div>
+                    @endforeach
+                </div>
+            </div>
         </div>
     </div>
 
@@ -121,7 +169,7 @@
                         </div>
                         <div class="form-group">
                             <label for="description">Description</label>
-                            <textarea name="description" id="description" rows="5" class="form-control"></textarea>
+                            <textarea name="description" id="description" rows="5" class="form-control">dda</textarea>
                         </div>
                         <div class="form-row">
                             {{-- <div class="form-group col-6">
@@ -133,7 +181,7 @@
                             </div> --}}
                             <div class="form-group col-6">
                                 <label for="date_info">Date</label>
-                                <input type="date" name="date_info" id="date_info" class="form-control">
+                                <input type="date" name="date_info" id="date_info" class="form-control" value="2023-01-03">
                             </div>
                             <div class="form-group col-6">
                                 <label for="time_type">Range</label>
@@ -148,7 +196,7 @@
                         </div>
                         <div class="form-group">
                             <label for="amount">Amount</label>
-                            <input type="number" name="amount" id="amount" class="form-control">
+                            <input type="number" name="amount" id="amount" class="form-control" value="30">
                         </div>
                         {{-- <div class="form-group form-check">
                             <input type="checkbox" class="form-check-input" id="extends_data">
