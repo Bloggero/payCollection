@@ -215,5 +215,5 @@
 @stop
 
 @section('js')
-    <script src="{{ asset('js/dashboard.js') }}"></>
+    <script src="{{ asset('js/dashboard.js') }}"></script>
 @stop
