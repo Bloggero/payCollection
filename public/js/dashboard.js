@@ -1,19 +1,19 @@
 const csrf = document.querySelector('[name="_token"]').value;
 
 function add() {
-    const userName = document.querySelector("#name").value || "Empty";
-    const description = document.querySelector("#description").value;
-    const amount = document.querySelector("#amount").value;
+    const userName = document.querySelector("#name");
+    const description = document.querySelector("#description");
+    const amount = document.querySelector("#amount");
     const params = {
         type: "post",
-        name: userName,
-        user: selectUser.value,
-        description: description,
-        // credit_type: credit_type.value,
+        name: userName.value  || "Empty",
+        user: selectUser.value  || "Empty",
+        description: description.value  || "Empty",
+        // credit_type: credit_type.value  || "Empty",
         credit_type: 'from',
-        date_info: date_info.value,
-        time_type: time_type.value,
-        amount: amount,
+        date_info: date_info.value  || "Empty",
+        time_type: time_type.value  || "Empty",
+        amount: amount.value  || "Empty",
         // extends: extends_data.checked,
         extends: 0,
         _token: csrf,
@@ -36,10 +36,13 @@ function add() {
         .done(function (response) {
             if (response.success) {
                 $("#newUserModal").modal("hide");
+
                 msgSweetAlert("success");
 
-                createElement('create', response.name, response.user_id, description, amount, response.itemId);
-
+                createElement('create', response.name, response.user_id, description.value, amount.value, response.itemId);
+                userName.value = '';
+                description.value = '';
+                amount.value = 0;
             } else {
                 msgSweetAlert("error");
             }
@@ -64,7 +67,7 @@ function createElement(type, name, userId, description, amount, itemId) {
                 <p class="card-text text-muted">${description}</p>
                 <hr />
                     <p class="card-text text-danger" id="amount-${itemId}">
-                        <b>${amount}</b></p>
+                        <b>$${amount}</b></p>
             </div>`;
             if (type == 'create'){
                 response += `<a href="javascript:void(0)" class="card-link bg-success paynow" id="a-${itemId}">`;
